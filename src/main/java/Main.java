@@ -1,5 +1,3 @@
-package configuration;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -19,7 +17,7 @@ public class Main extends Application {
     private MainWindow main;
 
     private static String[] savedArgs;
-    protected ConfigurableApplicationContext context;
+    private ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
         Main.savedArgs = args;
