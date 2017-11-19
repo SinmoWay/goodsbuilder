@@ -5,7 +5,7 @@ import java.io.IOException;
 public class MainWindow extends AbstractWindow {
 
     public MainWindow() throws IOException {
-        super("main.fxml");
+        super("window/main.fxml");
     }
 
 }
