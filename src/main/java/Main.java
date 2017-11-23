@@ -17,16 +17,16 @@ public class Main extends Application {
     private MainWindow main;
 
     private static String[] savedArgs;
-    private ConfigurableApplicationContext context;
+    private static ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
         Main.savedArgs = args;
-        launch(args);
+        launch(Main.class, args);
     }
 
     @Override
     public void init() throws Exception {
-        context = SpringApplication.run(getClass(), savedArgs);
+        context = SpringApplication.run(Main.class, savedArgs);
         context.getAutowireCapableBeanFactory().autowireBean(this);
     }
 

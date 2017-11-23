@@ -7,11 +7,11 @@ import javafx.scene.Parent;
 import java.io.IOException;
 import java.io.InputStream;
 
-public abstract class AbstractWindow {
+public abstract class AbstractWindow<T extends AbstractController> {
 
     protected final String view_path;
     protected final Parent view;
-    protected final AbstractController controller;
+    protected final T controller;
 
     protected AbstractWindow(String view_path) throws IOException {
         this.view_path = view_path;
@@ -31,7 +31,7 @@ public abstract class AbstractWindow {
         return view;
     }
 
-    public AbstractController getController() {
+    public T getController() {
         return controller;
     }
 
