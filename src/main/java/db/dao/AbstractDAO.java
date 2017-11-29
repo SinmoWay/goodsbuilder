@@ -9,12 +9,8 @@ import java.util.Collection;
 
 public abstract class AbstractDAO {
 
-    protected SessionFactory sessionFactory;
-
     @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    protected SessionFactory sessionFactory;
 
     public void delete(Class type, Serializable id){
         Object loaded = sessionFactory.getCurrentSession().load(type, id);

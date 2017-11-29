@@ -1,3 +1,5 @@
+package core;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,21 +15,16 @@ public class Main extends Application {
 
     @Value("${ui.title:Welcome}")
     private String windowTitle;
+
+    private static String[] savedArgs;
+    private ConfigurableApplicationContext context;
+
     @Autowired
     private MainWindow main;
 
-    private static String[] savedArgs;
-    private static ConfigurableApplicationContext context;
-
     public static void main(String[] args) {
-        Main.savedArgs = args;
+        savedArgs = args;
         launch(Main.class, args);
-    }
-
-    @Override
-    public void init() throws Exception {
-        context = SpringApplication.run(Main.class, savedArgs);
-        context.getAutowireCapableBeanFactory().autowireBean(this);
     }
 
     @Override
@@ -37,6 +34,12 @@ public class Main extends Application {
         stage.setResizable(true);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    @Override
+    public void init() throws Exception {
+        context = SpringApplication.run(getClass(), savedArgs);
+        context.getAutowireCapableBeanFactory().autowireBean(this);
     }
 
     @Override
