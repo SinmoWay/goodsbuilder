@@ -1,16 +1,17 @@
-package controller;
+package root.controller;
 
-import db.dao.ContentDao;
-import db.entity.ContentEntity;
 import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
+import root.db.entity.ContentEntity;
+import root.db.service.ContentService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 public class MainController extends AbstractController {
 
     @Autowired
-    private ContentDao contentDao;
+    private ContentService contentService;
 
     @Override
     @PostConstruct
@@ -22,7 +23,10 @@ public class MainController extends AbstractController {
         ContentEntity c = new ContentEntity();
         c.setName("name");
         c.setAmount(1);
-        contentDao.save(c);
+        contentService.save(c);
+
+        List<ContentEntity> list = contentService.getAll();
+        System.out.println(list);
     }
 
 }

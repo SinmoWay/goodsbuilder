@@ -1,4 +1,4 @@
-package core;
+package root.core;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import ui.MainWindow;
+import root.ui.MainWindow;
 
 @SpringBootApplication
 public class Main extends Application {

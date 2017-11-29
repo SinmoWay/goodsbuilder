@@ -1,9 +1,9 @@
-package core;
+package root.core;
 
-import controller.MainController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ui.MainWindow;
+import root.controller.MainController;
+import root.ui.MainWindow;
 
 import java.io.IOException;
 

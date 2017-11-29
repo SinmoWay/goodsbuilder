@@ -8,7 +8,7 @@
       prefWidth="900.0"
       xmlns="http://javafx.com/javafx/8.0.141"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.MainController">
+      fx:controller="root.controller.MainController">
 
     <MenuBar VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="Меню">

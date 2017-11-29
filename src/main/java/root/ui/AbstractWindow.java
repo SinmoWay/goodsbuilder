@@ -1,8 +1,8 @@
-package ui;
+package root.ui;
 
-import controller.AbstractController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import root.controller.AbstractController;
 
 import java.io.IOException;
 import java.io.InputStream;

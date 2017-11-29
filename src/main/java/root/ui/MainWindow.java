@@ -1,7 +1,7 @@
-package ui;
+package root.ui;
 
-import controller.MainController;
 import org.springframework.stereotype.Component;
+import root.controller.MainController;
 
 import java.io.IOException;
 

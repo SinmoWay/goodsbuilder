@@ -1,4 +1,4 @@
-package db.dao;
+package root.db.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,41 +7,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.Collection;
 
-public abstract class AbstractDAO {
+public abstract class AbstractDAO<T> {
 
     @Autowired
     protected SessionFactory sessionFactory;
 
-    public void delete(Class type, Serializable id){
-        Object loaded = sessionFactory.getCurrentSession().load(type, id);
-        sessionFactory.getCurrentSession()
-                .delete(loaded);
-    }
-
-    public <T> void save(T object) {
+    public void save(T object) {
         sessionFactory.getCurrentSession().saveOrUpdate(object);
     }
 
-    public <T> void save(Collection<T> objects) {
+    public void save(Collection<T> objects) {
         objects.forEach(o -> sessionFactory.getCurrentSession().saveOrUpdate(o));
     }
 
-    public <T> void refresh(T object) {
+    public void refresh(T object) {
         sessionFactory.getCurrentSession().refresh(object);
     }
 
-    public <T> T merge(T object) {
+    public T merge(T object) {
         return (T) sessionFactory.getCurrentSession().merge(object);
+    }
+
+    public void delete(Serializable id){
+        Object loaded = sessionFactory.getCurrentSession().load(getClazz(), id);
+        sessionFactory.getCurrentSession()
+                .delete(loaded);
     }
 
     /**
      * не использовать без явной необходимости
      */
-    public <T> void saveAndFlush(T object) {
+    public void saveAndFlush(T object) {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.saveOrUpdate(object);
         currentSession.flush();
         currentSession.clear();
     }
+
+    protected abstract Class<T> getClazz();
 
 }

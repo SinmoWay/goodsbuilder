@@ -1,7 +1,13 @@
-package db.entity;
+package root.db.entity;
 
 import javax.persistence.*;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "ContentEntity.getAll",
+                query = "FROM ContentEntity ORDER BY id"
+        )
+})
 @Entity
 @Table(name = "content")
 public class ContentEntity {
