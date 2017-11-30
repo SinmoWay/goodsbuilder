@@ -14,20 +14,20 @@ public class DictionaryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private Dictionary name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id_dictionary")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "dictionary", cascade = CascadeType.ALL)
     private List<DictionaryValueEntity> values = new ArrayList<>();
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

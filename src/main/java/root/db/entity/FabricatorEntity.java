@@ -11,23 +11,24 @@ public class FabricatorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
-    @Column(name = "id_name")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_name", nullable = false)
     private DictionaryValueEntity name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "fabricator_content",
             joinColumns = {@JoinColumn(name = "id_fabricator", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "id_content", nullable = false)})
     private List<ContentEntity> content = new ArrayList<>();
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

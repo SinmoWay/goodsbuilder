@@ -3,26 +3,26 @@ package root.db.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "dictionary")
+@Table(name = "dictionary_value")
 public class DictionaryValueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_dictionary", nullable = false)
     private DictionaryEntity dictionary;
 
     @Column(name = "value")
     private String value;
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -6,6 +6,3 @@ spring:
     name: GoodsBuilder
   jmx:
     enabled: false
-  jpa:
-    hibernate:
-              ddl-auto: create

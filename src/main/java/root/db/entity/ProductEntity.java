@@ -17,7 +17,7 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
     @Column(name = "image_name")
     private String image_name;
@@ -38,11 +38,11 @@ public class ProductEntity {
             inverseJoinColumns = {@JoinColumn(name = "id_content", nullable = false)})
     private List<FabricatorEntity> fabricators = new ArrayList<>();
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

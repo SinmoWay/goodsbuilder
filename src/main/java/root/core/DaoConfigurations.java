@@ -48,7 +48,6 @@ public class DaoConfigurations {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan(packages);
-
         sessionFactory.setHibernateProperties(properties());
         return sessionFactory;
     }
