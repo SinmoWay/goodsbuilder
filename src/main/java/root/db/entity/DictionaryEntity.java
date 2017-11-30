@@ -1,7 +1,10 @@
 package root.db.entity;
 
 
+import root.db.type.Dictionary;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,11 +16,12 @@ public class DictionaryEntity {
     @Column(name = "id")
     private long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    private String name;
+    private Dictionary name;
 
-    @ManyToOne
-    private List<DictionaryValueEntity> values;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id_dictionary")
+    private List<DictionaryValueEntity> values = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -27,11 +31,11 @@ public class DictionaryEntity {
         this.id = id;
     }
 
-    public String getName() {
+    public Dictionary getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Dictionary name) {
         this.name = name;
     }
 

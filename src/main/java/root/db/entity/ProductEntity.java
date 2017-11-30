@@ -1,8 +1,15 @@
 package root.db.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "ProductEntity.getAll",
+                query = "FROM ProductEntity ORDER BY id"
+        )
+})
 @Entity
 @Table(name = "product")
 public class ProductEntity {
@@ -24,8 +31,12 @@ public class ProductEntity {
     @Column(name = "weight")
     private Double weight;
 
-    @ManyToMany(mappedBy = "")
-    private List<FabricatorEntity> fabricators;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "product_fabricator",
+            joinColumns = {@JoinColumn(name = "id_fabricator", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "id_content", nullable = false)})
+    private List<FabricatorEntity> fabricators = new ArrayList<>();
 
     public long getId() {
         return id;

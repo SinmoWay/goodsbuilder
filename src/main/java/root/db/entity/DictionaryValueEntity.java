@@ -11,7 +11,8 @@ public class DictionaryValueEntity {
     @Column(name = "id")
     private long id;
 
-    @OneToMany(mappedBy = "id_dictionary")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_dictionary", nullable = false)
     private DictionaryEntity dictionary;
 
     @Column(name = "value")

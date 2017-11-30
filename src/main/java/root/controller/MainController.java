@@ -2,14 +2,14 @@ package root.controller;
 
 import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
-import root.db.service.ContentService;
+import root.db.service.ProductService;
 
 import javax.annotation.PostConstruct;
 
 public class MainController extends AbstractController {
 
     @Autowired
-    private ContentService contentService;
+    private ProductService productService;
 
     @Override
     @PostConstruct

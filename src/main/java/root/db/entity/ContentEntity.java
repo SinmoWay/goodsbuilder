@@ -2,12 +2,6 @@ package root.db.entity;
 
 import javax.persistence.*;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "ContentEntity.getAll",
-                query = "FROM ContentEntity ORDER BY id"
-        )
-})
 @Entity
 @Table(name = "content")
 public class ContentEntity {
@@ -17,7 +11,8 @@ public class ContentEntity {
     @Column(name = "id")
     private long id;
 
-    @JoinColumn(name = "id_name")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_name", nullable = false)
     private DictionaryValueEntity name;
 
     @Column(name = "amount")

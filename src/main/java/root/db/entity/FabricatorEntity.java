@@ -1,6 +1,7 @@
 package root.db.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,8 +16,12 @@ public class FabricatorEntity {
     @Column(name = "id_name")
     private DictionaryValueEntity name;
 
-    @ManyToMany(mappedBy = "")
-    private List<ContentEntity> content;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "fabricator_content",
+            joinColumns = {@JoinColumn(name = "id_fabricator", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "id_content", nullable = false)})
+    private List<ContentEntity> content = new ArrayList<>();
 
     public long getId() {
         return id;
