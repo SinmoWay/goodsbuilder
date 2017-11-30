@@ -1,27 +1,22 @@
 package root.db.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "ContentEntity.getAll",
-                query = "FROM ContentEntity ORDER BY id"
-        )
-})
 @Entity
-@Table(name = "content")
-public class ContentEntity {
+@Table(name = "fabricator")
+public class FabricatorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
 
-    @JoinColumn(name = "id_name")
+    @Column(name = "id_name")
     private DictionaryValueEntity name;
 
-    @Column(name = "amount")
-    private int amount;
+    @ManyToMany(mappedBy = "")
+    private List<ContentEntity> content;
 
     public long getId() {
         return id;
@@ -39,31 +34,31 @@ public class ContentEntity {
         this.name = name;
     }
 
-    public int getAmount() {
-        return amount;
+    public List<ContentEntity> getContent() {
+        return content;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setContent(List<ContentEntity> content) {
+        this.content = content;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ContentEntity)) return false;
+        if (!(o instanceof FabricatorEntity)) return false;
 
-        ContentEntity that = (ContentEntity) o;
+        FabricatorEntity that = (FabricatorEntity) o;
 
         if (id != that.id) return false;
-        if (amount != that.amount) return false;
-        return name != null ? name.equals(that.name) : that.name == null;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        return content != null ? content.equals(that.content) : that.content == null;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + amount;
+        result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
     }
 

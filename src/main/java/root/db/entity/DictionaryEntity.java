@@ -1,27 +1,23 @@
 package root.db.entity;
 
-import javax.persistence.*;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "ContentEntity.getAll",
-                query = "FROM ContentEntity ORDER BY id"
-        )
-})
+import javax.persistence.*;
+import java.util.List;
+
 @Entity
-@Table(name = "content")
-public class ContentEntity {
+@Table(name = "dictionary")
+public class DictionaryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
 
-    @JoinColumn(name = "id_name")
-    private DictionaryValueEntity name;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "amount")
-    private int amount;
+    @ManyToOne
+    private List<DictionaryValueEntity> values;
 
     public long getId() {
         return id;
@@ -31,31 +27,30 @@ public class ContentEntity {
         this.id = id;
     }
 
-    public DictionaryValueEntity getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(DictionaryValueEntity name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getAmount() {
-        return amount;
+    public List<DictionaryValueEntity> getValues() {
+        return values;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setValues(List<DictionaryValueEntity> values) {
+        this.values = values;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ContentEntity)) return false;
+        if (!(o instanceof DictionaryEntity)) return false;
 
-        ContentEntity that = (ContentEntity) o;
+        DictionaryEntity that = (DictionaryEntity) o;
 
         if (id != that.id) return false;
-        if (amount != that.amount) return false;
         return name != null ? name.equals(that.name) : that.name == null;
     }
 
@@ -63,7 +58,6 @@ public class ContentEntity {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + amount;
         return result;
     }
 
