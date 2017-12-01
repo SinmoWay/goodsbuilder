@@ -2,12 +2,14 @@ package root.core;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import root.db.type.ImgResources;
 import root.ui.MainWindow;
 
 @SpringBootApplication
@@ -33,6 +35,7 @@ public class Main extends Application {
         stage.setScene(new Scene(main.getView()));
         stage.setResizable(true);
         stage.centerOnScreen();
+        stage.getIcons().add(new Image(ImgResources.TUX.path()));
         stage.show();
     }
 

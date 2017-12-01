@@ -1,11 +1,11 @@
 package root.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.db.service.ProductService;
+import root.db.type.ImgResources;
 
 import javax.annotation.PostConstruct;
 
@@ -14,10 +14,15 @@ public class MainController extends AbstractController {
     @Autowired
     private ProductService productService;
 
+    //MENU
     @FXML
-    private TreeView<String> mainTree;
+    private Menu menu;
     @FXML
-    private Label infoText;
+    private MenuItem unloadButton;
+    @FXML
+    private MenuItem uploadButton;
+
+    //TOOLBAR
     @FXML
     private Button addButton;
     @FXML
@@ -25,30 +30,79 @@ public class MainController extends AbstractController {
     @FXML
     private Button removeButton;
 
+    //BODY
+    @FXML
+    private TreeView<String> mainTree;
+
+    //STATUS PART
+    @FXML
+    private Label infoText;
+    @FXML
+    private ImageView statusImg;
+
     @Override
     @PostConstruct
     public void init() {
+        this.onMenuHide();
+
+        unloadButton.setGraphic(ImgResource.getSqView(ImgResources.UNLOAD, 25));
+        uploadButton.setGraphic(ImgResource.getSqView(ImgResources.UPLOAD, 25));
+
+        addButton.setGraphic(ImgResource.getSqView(ImgResources.ADD, 25));
+        editButton.setGraphic(ImgResource.getSqView(ImgResources.EDIT, 25));
+        removeButton.setGraphic(ImgResource.getSqView(ImgResources.REMOVE, 25));
+
         infoText.setText("Успешно загружено");
+        ImgResource.initSqView(statusImg, ImgResources.FACE_GOOD, 20);
+    }
+
+    @FXML
+    public void onMenuHide() {
+        menu.setGraphic(ImgResource.getSqView(ImgResources.MENU_OPEN, 10));
+    }
+
+    @FXML
+    public void onMenuShown() {
+        menu.setGraphic(ImgResource.getSqView(ImgResources.MENU_CLOSE, 10));
     }
 
     @FXML
     public void unloadJson() {
+        infoText.setText("Выгружаем");
     }
 
     @FXML
     public void uploadJson() {
+        infoText.setText("Загружаем");
     }
 
     @FXML
     public void onAdd() {
+        infoText.setText("Добавляем");
     }
 
     @FXML
     public void onEdit() {
+        infoText.setText("Едет");
     }
 
     @FXML
     public void onRemove() {
+        infoText.setText("Ремува");
+    }
+
+    @FXML
+    public void onTreeLeftClicked() {
+        infoText.setText("Лева");
+        editButton.setDisable(false);
+        removeButton.setDisable(false);
+    }
+
+    @FXML
+    public void onTreeRightClicked() {
+        infoText.setText("Права");
+        editButton.setDisable(true);
+        removeButton.setDisable(true);
     }
 
 }
