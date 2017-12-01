@@ -1,13 +1,13 @@
 package root.db.type;
 
-public enum Dictionary {
+public enum DictionaryType {
 
     CONTENT_NAME("Название товара"),
     FABRICATOR_NAME("Название фирмы производителя");
 
-    private String description;
+    private final String description;
 
-    Dictionary(String description) {
+    DictionaryType(String description) {
         this.description = description;
     }
 

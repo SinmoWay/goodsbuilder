@@ -25,7 +25,6 @@ public class MainController extends AbstractController {
     @FXML
     private Button removeButton;
 
-
     @Override
     @PostConstruct
     public void init() {
