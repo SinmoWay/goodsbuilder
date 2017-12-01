@@ -4,7 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
+import root.controller.util.ImgResource;
+import root.db.dto.AbstractDTO;
 import root.db.service.ProductService;
+import root.db.type.DictionaryType;
 import root.db.type.ImgResources;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +35,7 @@ public class MainController extends AbstractController {
 
     //BODY
     @FXML
-    private TreeView<String> mainTree;
+    private TreeView<AbstractDTO> mainTree;
 
     //STATUS PART
     @FXML
@@ -54,6 +57,22 @@ public class MainController extends AbstractController {
 
         infoText.setText("Успешно загружено");
         ImgResource.initSqView(statusImg, ImgResources.FACE_GOOD, 20);
+
+        TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все"));
+        root.setExpanded(true);
+
+        TreeItem<AbstractDTO> products = new TreeItem<>(new AbstractDTO("Товары"));
+        //TODO: Заполнение товаров
+
+        TreeItem<AbstractDTO> contentNames = new TreeItem<>(new AbstractDTO(DictionaryType.CONTENT_NAME.getDescription()));
+        //TODO: Заполнение имен контента
+
+        TreeItem<AbstractDTO> fabricatorNames = new TreeItem<>(new AbstractDTO(DictionaryType.FABRICATOR_NAME.getDescription()));
+        //TODO: Заполнение имен производителей
+
+        root.getChildren().addAll(products, contentNames, fabricatorNames);
+
+        mainTree.setRoot(root);
     }
 
     @FXML

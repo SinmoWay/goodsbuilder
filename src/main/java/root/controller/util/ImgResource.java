@@ -1,4 +1,4 @@
-package root.controller;
+package root.controller.util;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,7 +9,7 @@ public final class ImgResource {
     private ImgResource() {
     }
 
-    static ImageView getSqView(ImgResources res, int size) {
+    public static ImageView getSqView(ImgResources res, int size) {
         ImageView imgView = new ImageView(res.path());
 
         setSqSize(imgView, size);
@@ -18,7 +18,7 @@ public final class ImgResource {
         return imgView;
     }
 
-    static void initSqView(ImageView imgView, ImgResources res, int size) {
+    public static void initSqView(ImageView imgView, ImgResources res, int size) {
         imgView.setImage(new Image(res.path()));
 
         setSqSize(imgView, size);
