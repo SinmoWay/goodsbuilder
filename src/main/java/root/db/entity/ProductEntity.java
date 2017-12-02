@@ -7,7 +7,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "ProductEntity.getAll",
-                query = "FROM ProductEntity ORDER BY id"
+                query = "SELECT pe FROM ProductEntity pe ORDER BY pe.id"
         )
 })
 @Entity

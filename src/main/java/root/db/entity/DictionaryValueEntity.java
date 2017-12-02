@@ -2,6 +2,12 @@ package root.db.entity;
 
 import javax.persistence.*;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "DictionaryValueEntity.getAllByDictionary",
+                query = "SELECT dv FROM DictionaryValueEntity dv WHERE dv.dictionary.name = :dic ORDER BY dv.id"
+        )
+})
 @Entity
 @Table(name = "dictionary_value")
 public class DictionaryValueEntity {

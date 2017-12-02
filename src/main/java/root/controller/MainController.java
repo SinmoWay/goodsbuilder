@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.controller.util.ImgResource;
 import root.db.dto.AbstractDTO;
+import root.db.service.DictionaryService;
 import root.db.service.ProductService;
 import root.db.type.DictionaryType;
 import root.db.type.ImgResources;
@@ -16,6 +17,8 @@ public class MainController extends AbstractController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private DictionaryService dictionaryService;
 
     //MENU
     @FXML
@@ -65,10 +68,15 @@ public class MainController extends AbstractController {
         //TODO: Заполнение товаров
 
         TreeItem<AbstractDTO> contentNames = new TreeItem<>(new AbstractDTO(DictionaryType.CONTENT_NAME.getDescription()));
-        //TODO: Заполнение имен контента
+        dictionaryService.getAllValuesByDictionary(DictionaryType.CONTENT_NAME).forEach(dicValue -> {
+            contentNames.getChildren().addAll(new TreeItem<>(dicValue));
+        });
+
 
         TreeItem<AbstractDTO> fabricatorNames = new TreeItem<>(new AbstractDTO(DictionaryType.FABRICATOR_NAME.getDescription()));
-        //TODO: Заполнение имен производителей
+        dictionaryService.getAllValuesByDictionary(DictionaryType.FABRICATOR_NAME).forEach(dicValue -> {
+            fabricatorNames.getChildren().addAll(new TreeItem<>(dicValue));
+        });
 
         root.getChildren().addAll(products, contentNames, fabricatorNames);
 
