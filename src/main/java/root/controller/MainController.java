@@ -123,6 +123,26 @@ public class MainController extends AbstractController {
         infoText.setText("Лева");
         editButton.setDisable(false);
         removeButton.setDisable(false);
+        TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все"));
+        root.setExpanded(true);
+
+        TreeItem<AbstractDTO> products = new TreeItem<>(new AbstractDTO("Товары"));
+        //TODO: Заполнение товаров
+
+        TreeItem<AbstractDTO> contentNames = new TreeItem<>(new AbstractDTO(DictionaryType.CONTENT_NAME.getDescription()));
+        dictionaryService.getAllValuesByDictionary(DictionaryType.CONTENT_NAME).forEach(dicValue -> {
+            contentNames.getChildren().addAll(new TreeItem<>(dicValue));
+        });
+
+
+        TreeItem<AbstractDTO> fabricatorNames = new TreeItem<>(new AbstractDTO(DictionaryType.FABRICATOR_NAME.getDescription()));
+        dictionaryService.getAllValuesByDictionary(DictionaryType.FABRICATOR_NAME).forEach(dicValue -> {
+            fabricatorNames.getChildren().addAll(new TreeItem<>(dicValue));
+        });
+
+        root.getChildren().addAll(products, contentNames, fabricatorNames);
+
+        mainTree.setRoot(root);
     }
 
     @FXML

@@ -56,10 +56,14 @@ public class DaoConfigurations {
     public Properties properties() {
         Properties hp = new Properties();
         hp.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+
         hp.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        hp.setProperty("hibernate.hbm2ddl.import_files", env.getProperty("hibernate.hbm2ddl.import_files"));
+
         hp.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         hp.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
         hp.setProperty("hibernate.use_sql_comments", env.getProperty("hibernate.use_sql_comments"));
+
         hp.setProperty("hibernate.jdbc.batch_size", env.getProperty("hibernate.jdbc.batch_size"));
         hp.setProperty("hibernate.connection.pool_size", "5");
 
