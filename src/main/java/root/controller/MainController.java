@@ -1,8 +1,10 @@
 package root.controller;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.controller.util.ImgResource;
 import root.db.dto.AbstractDTO;
@@ -32,6 +34,8 @@ public class MainController extends AbstractController {
     @FXML
     private Button addButton;
     @FXML
+    private Button refreshButton;
+    @FXML
     private Button editButton;
     @FXML
     private Button removeButton;
@@ -55,32 +59,18 @@ public class MainController extends AbstractController {
         uploadButton.setGraphic(ImgResource.getSqView(ImgResources.UPLOAD, 25));
 
         addButton.setGraphic(ImgResource.getSqView(ImgResources.ADD, 25));
+        //TODO: КАРТИНКА!
+        refreshButton.setGraphic(ImgResource.getSqView(ImgResources.TUX, 25));
         editButton.setGraphic(ImgResource.getSqView(ImgResources.EDIT, 25));
         removeButton.setGraphic(ImgResource.getSqView(ImgResources.REMOVE, 25));
 
         infoText.setText("Успешно загружено");
         ImgResource.initSqView(statusImg, ImgResources.FACE_GOOD, 20);
+    }
 
-        TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все"));
-        root.setExpanded(true);
-
-        TreeItem<AbstractDTO> products = new TreeItem<>(new AbstractDTO("Товары"));
-        //TODO: Заполнение товаров
-
-        TreeItem<AbstractDTO> contentNames = new TreeItem<>(new AbstractDTO(DictionaryType.CONTENT_NAME.getDescription()));
-        dictionaryService.getAllValuesByDictionary(DictionaryType.CONTENT_NAME).forEach(dicValue -> {
-            contentNames.getChildren().addAll(new TreeItem<>(dicValue));
-        });
-
-
-        TreeItem<AbstractDTO> fabricatorNames = new TreeItem<>(new AbstractDTO(DictionaryType.FABRICATOR_NAME.getDescription()));
-        dictionaryService.getAllValuesByDictionary(DictionaryType.FABRICATOR_NAME).forEach(dicValue -> {
-            fabricatorNames.getChildren().addAll(new TreeItem<>(dicValue));
-        });
-
-        root.getChildren().addAll(products, contentNames, fabricatorNames);
-
-        mainTree.setRoot(root);
+    @Override
+    public EventHandler<WindowEvent> onStart() {
+        return event -> onRefresh();
     }
 
     @FXML
@@ -109,20 +99,7 @@ public class MainController extends AbstractController {
     }
 
     @FXML
-    public void onEdit() {
-        infoText.setText("Едет");
-    }
-
-    @FXML
-    public void onRemove() {
-        infoText.setText("Ремува");
-    }
-
-    @FXML
-    public void onTreeLeftClicked() {
-        infoText.setText("Лева");
-        editButton.setDisable(false);
-        removeButton.setDisable(false);
+    public void onRefresh() {
         TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все"));
         root.setExpanded(true);
 
@@ -143,6 +120,24 @@ public class MainController extends AbstractController {
         root.getChildren().addAll(products, contentNames, fabricatorNames);
 
         mainTree.setRoot(root);
+        mainTree.refresh();
+    }
+
+    @FXML
+    public void onEdit() {
+        infoText.setText("Едет");
+    }
+
+    @FXML
+    public void onRemove() {
+        infoText.setText("Ремува");
+    }
+
+    @FXML
+    public void onTreeLeftClicked() {
+        infoText.setText("Лева");
+        editButton.setDisable(false);
+        removeButton.setDisable(false);
     }
 
     @FXML
