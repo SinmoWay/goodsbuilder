@@ -11,31 +11,31 @@ import java.util.List;
         )
 })
 @Entity
-@Table(name = "product")
+@Table(name = "PRODUCT")
 public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "image_name")
+    @Column(name = "IMAGE_NAME")
     private String image_name;
 
-    @Column(name = "description")
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "PRICE")
     private Double price;
 
-    @Column(name = "weight")
+    @Column(name = "WEIGHT")
     private Double weight;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "product_fabricator",
-            joinColumns = {@JoinColumn(name = "id_fabricator", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "id_content", nullable = false)})
+            name = "PRODUCT_FABRICATOR",
+            joinColumns = {@JoinColumn(name = "ID_PRODUCT", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "ID_FABRICATOR", nullable = false)})
     private List<FabricatorEntity> fabricators = new ArrayList<>();
 
     public Integer getId() {

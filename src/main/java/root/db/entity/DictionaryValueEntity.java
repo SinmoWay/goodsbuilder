@@ -9,19 +9,19 @@ import javax.persistence.*;
         )
 })
 @Entity
-@Table(name = "dictionary_value")
+@Table(name = "DICTIONARY_VALUE")
 public class DictionaryValueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_dictionary", nullable = false)
+    @JoinColumn(name = "ID_DICTIONARY", nullable = false)
     private DictionaryEntity dictionary;
 
-    @Column(name = "value")
+    @Column(name = "VALUE")
     private String value;
 
     public Integer getId() {
@@ -55,14 +55,14 @@ public class DictionaryValueEntity {
 
         DictionaryValueEntity that = (DictionaryValueEntity) o;
 
-        if (id != that.id) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (dictionary != null ? !dictionary.equals(that.dictionary) : that.dictionary != null) return false;
         return value != null ? value.equals(that.value) : that.value == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (dictionary != null ? dictionary.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;

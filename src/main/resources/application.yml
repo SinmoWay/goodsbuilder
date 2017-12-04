@@ -1,6 +1,3 @@
-ui:
-  title: Формирование данных
-
 spring:
   application:
     name: GoodsBuilder

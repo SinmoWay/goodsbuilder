@@ -3,19 +3,19 @@ package root.db.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "content")
+@Table(name = "CONTENT")
 public class ContentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_name", nullable = false)
+    @JoinColumn(name = "ID_NAME", nullable = false)
     private DictionaryValueEntity name;
 
-    @Column(name = "amount")
+    @Column(name = "AMOUNT")
     private int amount;
 
     public Integer getId() {

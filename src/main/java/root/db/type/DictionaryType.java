@@ -2,7 +2,7 @@ package root.db.type;
 
 public enum DictionaryType {
 
-    //добавилось значение? Добавь в import.sql
+    //добавилось значение? Добавь в data.sql
     CONTENT_NAME("Название товара"),
     FABRICATOR_NAME("Название фирмы производителя");
 

@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "dictionary")
+@Table(name = "DICTIONARY")
 public class DictionaryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "name", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private DictionaryType name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "dictionary", cascade = CascadeType.ALL)
@@ -54,13 +54,13 @@ public class DictionaryEntity {
 
         DictionaryEntity that = (DictionaryEntity) o;
 
-        if (id != that.id) return false;
-        return name != null ? name.equals(that.name) : that.name == null;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return name == that.name;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
