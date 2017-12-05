@@ -6,21 +6,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import root.controller.util.ImgResource;
 import root.db.dto.AbstractDTO;
-import root.db.service.DictionaryService;
-import root.db.service.ProductService;
-import root.db.type.DictionaryType;
 import root.db.type.ImgResources;
+import root.ui.ImgResource;
+import root.ui.TreeBuilder;
 
 import javax.annotation.PostConstruct;
 
 public class MainController extends AbstractController {
-
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private DictionaryService dictionaryService;
 
     //MENU
     @FXML
@@ -49,6 +42,11 @@ public class MainController extends AbstractController {
     private Label infoText;
     @FXML
     private ImageView statusImg;
+
+    @Autowired
+    private TreeBuilder treeBuilder;
+
+    private AbstractDTO currentItem = null;
 
     @Override
     @PostConstruct
@@ -103,21 +101,7 @@ public class MainController extends AbstractController {
         TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все"));
         root.setExpanded(true);
 
-        TreeItem<AbstractDTO> products = new TreeItem<>(new AbstractDTO("Товары"));
-        //TODO: Заполнение товаров
-
-        TreeItem<AbstractDTO> contentNames = new TreeItem<>(new AbstractDTO(DictionaryType.CONTENT_NAME.getDescription()));
-        dictionaryService.getAllValuesByDictionary(DictionaryType.CONTENT_NAME).forEach(dicValue -> {
-            contentNames.getChildren().addAll(new TreeItem<>(dicValue));
-        });
-
-
-        TreeItem<AbstractDTO> fabricatorNames = new TreeItem<>(new AbstractDTO(DictionaryType.FABRICATOR_NAME.getDescription()));
-        dictionaryService.getAllValuesByDictionary(DictionaryType.FABRICATOR_NAME).forEach(dicValue -> {
-            fabricatorNames.getChildren().addAll(new TreeItem<>(dicValue));
-        });
-
-        root.getChildren().addAll(products, contentNames, fabricatorNames);
+        root.getChildren().addAll(treeBuilder.getProductsNode(), treeBuilder.getFabricatorName(), treeBuilder.getContentNames());
 
         mainTree.setRoot(root);
         mainTree.refresh();
@@ -135,16 +119,22 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onTreeLeftClicked() {
-        infoText.setText("Лева");
-        editButton.setDisable(false);
-        removeButton.setDisable(false);
+        TreeItem<AbstractDTO> item = mainTree.getFocusModel().getFocusedItem();
+        currentItem = item == null ? null : item.getValue();
+        if(currentItem == null || currentItem.getId() == null) {
+            editButton.setDisable(true);
+            removeButton.setDisable(true);
+        } else {
+            editButton.setDisable(false);
+            removeButton.setDisable(false);
+        }
     }
 
     @FXML
     public void onTreeRightClicked() {
-        infoText.setText("Права");
-        editButton.setDisable(true);
-        removeButton.setDisable(true);
+//        infoText.setText("Права");
+//        editButton.setDisable(true);
+//        removeButton.setDisable(true);
     }
 
 }

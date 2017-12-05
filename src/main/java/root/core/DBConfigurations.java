@@ -25,7 +25,7 @@ import java.util.Properties;
 @EnableTransactionManagement(proxyTargetClass = true)
 @PropertySource("classpath:hibernate.properties")
 @ComponentScan(basePackages = "root.db")
-public class DaoConfigurations {
+public class DBConfigurations {
 
     @Autowired
     private Environment env;

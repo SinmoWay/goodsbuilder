@@ -5,9 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import root.db.dao.ProductDao;
+import root.db.dto.ContentDTO;
+import root.db.dto.FabricatorDTO;
+import root.db.dto.ProductDTO;
 import root.db.entity.ProductEntity;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -21,13 +26,34 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ProductEntity> getAllInited() {
-        List<ProductEntity> products =  productDao.getAll();
-        products.forEach(product -> {
-            Hibernate.initialize(product.getFabricators());
-            product.getFabricators().forEach(fabricator -> Hibernate.initialize(fabricator.getContent()));
-        });
-        return products;
+    public List<ProductDTO> getAllInited() {
+        return productDao.getAll()
+                .stream()
+                .filter(Objects::nonNull)
+                .map(product -> {
+
+                    Hibernate.initialize(product.getFabricators());
+
+                    List<FabricatorDTO> fabricators = product.getFabricators()
+                            .stream()
+                            .filter(Objects::nonNull)
+                            .map(fabricator -> {
+
+                                Hibernate.initialize(fabricator.getContent());
+
+                                List<ContentDTO> contents = fabricator.getContent()
+                                        .stream()
+                                        .filter(Objects::nonNull)
+                                        .map(ContentDTO::new)
+                                        .collect(Collectors.toList());
+
+                                return new FabricatorDTO(fabricator, contents);
+                            })
+                            .collect(Collectors.toList());
+
+                    return new ProductDTO(product, fabricators);
+                })
+                .collect(Collectors.toList());
     }
 
 }

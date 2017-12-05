@@ -1,4 +1,4 @@
-package root.controller.util;
+package root.ui;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
