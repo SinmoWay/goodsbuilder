@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import root.ui.MainWindow;
+import root.ui.window.MainWindow;
 
 @SpringBootApplication
 public class Main extends Application {

@@ -1,4 +1,4 @@
-package root.ui;
+package root.ui.window;
 
 import org.springframework.stereotype.Component;
 import root.controller.MainController;

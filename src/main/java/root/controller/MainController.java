@@ -4,16 +4,23 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.db.dto.AbstractDTO;
+import root.db.dto.DictionaryValueDTO;
 import root.db.type.ImgResource;
-import root.ui.ImgResourceBuilder;
-import root.ui.TreeBuilder;
+import root.ui.builder.ImgResourceBuilder;
+import root.ui.builder.TreeBuilder;
+import root.ui.window.DictionaryEditWindow;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 
 public class MainController extends AbstractController {
+
+    @Autowired
+    private DictionaryEditWindow dicValue;
 
     //MENU
     @FXML
@@ -107,8 +114,10 @@ public class MainController extends AbstractController {
     }
 
     @FXML
-    public void onEdit() {
-        infoText.setText("Едет");
+    public void onEdit() throws IOException {
+        if(currentItem instanceof DictionaryValueDTO) {
+            dicValue.startWindow(new Stage());
+        }
     }
 
     @FXML

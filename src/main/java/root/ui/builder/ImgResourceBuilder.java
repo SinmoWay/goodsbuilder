@@ -1,4 +1,4 @@
-package root.ui;
+package root.ui.builder;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

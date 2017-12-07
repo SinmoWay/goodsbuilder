@@ -1,4 +1,4 @@
-package root.ui;
+package root.ui.builder;
 
 import javafx.scene.control.TreeItem;
 import org.springframework.beans.factory.annotation.Autowired;
