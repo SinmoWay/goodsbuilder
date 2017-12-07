@@ -1,10 +1,11 @@
 package root.db.type;
 
-public enum ImgResources {
+public enum ImgResource {
 
     ADD("add"),
     EDIT("edit"),
     REMOVE("remove"),
+    REFRESH("refresh"),
 
     FACE_BAD("bad"),
     FACE_NORMAL("normal"),
@@ -24,7 +25,7 @@ public enum ImgResources {
     private static final String SUFFIX_PATH = ".png";
     private final String path;
 
-    ImgResources(String path) {
+    ImgResource(String path) {
         this.path = path;
     }
 

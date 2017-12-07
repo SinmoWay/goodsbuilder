@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.db.dto.AbstractDTO;
-import root.db.type.ImgResources;
-import root.ui.ImgResource;
+import root.db.type.ImgResource;
+import root.ui.ImgResourceBuilder;
 import root.ui.TreeBuilder;
 
 import javax.annotation.PostConstruct;
@@ -53,17 +53,16 @@ public class MainController extends AbstractController {
     public void init() {
         this.onMenuHide();
 
-        unloadButton.setGraphic(ImgResource.getSqView(ImgResources.UNLOAD, 25));
-        uploadButton.setGraphic(ImgResource.getSqView(ImgResources.UPLOAD, 25));
+        unloadButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.UNLOAD, 25));
+        uploadButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.UPLOAD, 25));
 
-        addButton.setGraphic(ImgResource.getSqView(ImgResources.ADD, 25));
-        //TODO: КАРТИНКА!
-        refreshButton.setGraphic(ImgResource.getSqView(ImgResources.TUX, 25));
-        editButton.setGraphic(ImgResource.getSqView(ImgResources.EDIT, 25));
-        removeButton.setGraphic(ImgResource.getSqView(ImgResources.REMOVE, 25));
+        addButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.ADD, 25));
+        refreshButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REFRESH, 25));
+        editButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.EDIT, 25));
+        removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
 
         infoText.setText("Успешно загружено");
-        ImgResource.initSqView(statusImg, ImgResources.FACE_GOOD, 20);
+        ImgResourceBuilder.initSqView(statusImg, ImgResource.FACE_GOOD, 20);
     }
 
     @Override
@@ -73,12 +72,12 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onMenuHide() {
-        menu.setGraphic(ImgResource.getSqView(ImgResources.MENU_OPEN, 10));
+        menu.setGraphic(ImgResourceBuilder.getSqView(ImgResource.MENU_OPEN, 10));
     }
 
     @FXML
     public void onMenuShown() {
-        menu.setGraphic(ImgResource.getSqView(ImgResources.MENU_CLOSE, 10));
+        menu.setGraphic(ImgResourceBuilder.getSqView(ImgResource.MENU_CLOSE, 10));
     }
 
     @FXML
@@ -121,7 +120,7 @@ public class MainController extends AbstractController {
     public void onTreeLeftClicked() {
         TreeItem<AbstractDTO> item = mainTree.getFocusModel().getFocusedItem();
         currentItem = item == null ? null : item.getValue();
-        if(currentItem == null || currentItem.getId() == null) {
+        if (currentItem == null || currentItem.getId() == null) {
             editButton.setDisable(true);
             removeButton.setDisable(true);
         } else {

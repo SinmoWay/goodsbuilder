@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import root.controller.AbstractController;
-import root.db.type.ImgResources;
+import root.db.type.ImgResource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +45,7 @@ public abstract class AbstractWindow<T extends AbstractController> {
     public void startWindow(Stage stage) {
         stage.setTitle(title);
         stage.setScene(new Scene(view));
-        stage.getIcons().add(new Image(ImgResources.TUX.path()));
+        stage.getIcons().add(new Image(ImgResource.TUX.path()));
         stage.addEventHandler(WindowEvent.WINDOW_SHOWN, controller.onStart());
         stage.setResizable(true);
         stage.centerOnScreen();

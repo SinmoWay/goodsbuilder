@@ -2,14 +2,14 @@ package root.ui;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import root.db.type.ImgResources;
+import root.db.type.ImgResource;
 
-public final class ImgResource {
+public final class ImgResourceBuilder {
 
-    private ImgResource() {
+    private ImgResourceBuilder() {
     }
 
-    public static ImageView getSqView(ImgResources res, int size) {
+    public static ImageView getSqView(ImgResource res, int size) {
         ImageView imgView = new ImageView(res.path());
 
         setSqSize(imgView, size);
@@ -18,7 +18,7 @@ public final class ImgResource {
         return imgView;
     }
 
-    public static void initSqView(ImageView imgView, ImgResources res, int size) {
+    public static void initSqView(ImageView imgView, ImgResource res, int size) {
         imgView.setImage(new Image(res.path()));
 
         setSqSize(imgView, size);
