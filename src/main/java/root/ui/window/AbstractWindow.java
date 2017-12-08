@@ -19,6 +19,9 @@ public abstract class AbstractWindow<T extends AbstractController> {
     protected final Parent view;
     protected final T controller;
 
+    protected Stage stage;
+    protected Scene scene;
+
     protected AbstractWindow(String view_path, String title) throws IOException {
         this.title = title;
         this.view_path = view_path;
@@ -30,7 +33,7 @@ public abstract class AbstractWindow<T extends AbstractController> {
         }
     }
 
-    public String getView_path() {
+    public String getViewPath() {
         return view_path;
     }
 
@@ -42,11 +45,21 @@ public abstract class AbstractWindow<T extends AbstractController> {
         return controller;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public void startWindow(Stage stage) {
-        stage.setTitle(title);
-        stage.setScene(new Scene(view));
+        if (this.stage == null) {
+            this.stage = stage;
+        }
+        if (this.scene == null) {
+            this.scene = new Scene(view);
+        }
+        stage.setScene(scene);
         stage.getIcons().add(new Image(ImgResource.TUX.path()));
         stage.addEventHandler(WindowEvent.WINDOW_SHOWN, controller.onStart());
+        stage.addEventHandler(WindowEvent.WINDOW_HIDDEN, controller.onEnd());
         stage.setResizable(true);
         stage.centerOnScreen();
         stage.show();

@@ -74,7 +74,18 @@ public class MainController extends AbstractController {
 
     @Override
     public EventHandler<WindowEvent> onStart() {
-        return event -> onRefresh();
+        return event -> {
+            setShown(true);
+            onRefresh();
+        };
+    }
+
+    @Override
+    public EventHandler<WindowEvent> onEnd() {
+        return event -> {
+            dicValue.getStage().close();
+            setShown(false);
+        };
     }
 
     @FXML
@@ -99,24 +110,28 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onAdd() {
-        infoText.setText("Добавляем");
+        if (!dicValue.getController().isShown()) {
+            dicValue.getController().setInputText("");
+            dicValue.startWindow(new Stage());
+        }
     }
 
     @FXML
     public void onRefresh() {
         TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все"));
         root.setExpanded(true);
-
         root.getChildren().addAll(treeBuilder.getProductsNode(), treeBuilder.getFabricatorName(), treeBuilder.getContentNames());
-
         mainTree.setRoot(root);
         mainTree.refresh();
     }
 
     @FXML
     public void onEdit() throws IOException {
-        if(currentItem instanceof DictionaryValueDTO) {
-            dicValue.startWindow(new Stage());
+        if (!dicValue.getController().isShown()) {
+            if (currentItem instanceof DictionaryValueDTO) {
+                dicValue.getController().setInputText(currentItem.getNodeText());
+                dicValue.startWindow(new Stage());
+            }
         }
     }
 
@@ -140,9 +155,6 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onTreeRightClicked() {
-//        infoText.setText("Права");
-//        editButton.setDisable(true);
-//        removeButton.setDisable(true);
     }
 
 }
