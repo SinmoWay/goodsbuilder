@@ -8,15 +8,16 @@ public class AbstractDTO {
     protected String nodeText;
     protected NodeType nodeType;
 
-    public AbstractDTO(String nodeText) {
+    public AbstractDTO(String nodeText, NodeType nodeType) {
         id = null;
         this.nodeText = nodeText;
-
+        this.nodeType = nodeType;
     }
 
-    protected AbstractDTO(Integer id, String nodeText) {
+    protected AbstractDTO(Integer id, String nodeText, NodeType nodeType) {
         this.id = id;
         this.nodeText = nodeText;
+        this.nodeType = nodeType;
     }
 
     public Integer getId() {

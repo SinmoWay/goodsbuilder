@@ -11,8 +11,10 @@ public class ProductDTO extends AbstractDTO {
     private final List<FabricatorDTO> fabricators;
 
     public ProductDTO(ProductEntity entity, List<FabricatorDTO> fabricators) {
-        super(entity.getId(), entity.getDescription()
-                + "\n(цена: " + entity.getPrice() + ", вес: " + entity.getWeight() + ", изображение: " + entity.getImage_name() + ")");
+        super(entity.getId(),
+                entity.getDescription()
+                + "\n(цена: " + entity.getPrice() + ", вес: " + entity.getWeight() + ", изображение: " + entity.getImage_name() + ")",
+                entity.getType());
         this.type = entity.getType();
         this.fabricators = fabricators;
     }

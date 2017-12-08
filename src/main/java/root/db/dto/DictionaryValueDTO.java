@@ -13,7 +13,7 @@ public class DictionaryValueDTO extends AbstractDTO {
     }
 
     public DictionaryValueDTO(DictionaryValueEntity entity) {
-        super(entity.getId(), entity.getValue());
+        super(entity.getId(), entity.getValue(), entity.getDictionary().getName());
         this.dictionary = entity.getDictionary();
     }
 

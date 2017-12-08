@@ -111,14 +111,14 @@ public class MainController extends AbstractController {
     @FXML
     public void onAdd() {
         if (!dicValue.getController().isShown()) {
-//            dicValue.getController().setDTO(new DictionaryValueDTO(currentItem.));
+            dicValue.getController().setDTO(new DictionaryValueDTO(((DictionaryValueDTO) currentItem).getDictionary()));
             dicValue.startWindow(new Stage());
         }
     }
 
     @FXML
     public void onRefresh() {
-        TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все"));
+        TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все", null));
         root.setExpanded(true);
         root.getChildren().addAll(treeBuilder.getProductsNode(), treeBuilder.getFabricatorName(), treeBuilder.getContentNames());
         mainTree.setRoot(root);
@@ -151,10 +151,6 @@ public class MainController extends AbstractController {
             editButton.setDisable(false);
             removeButton.setDisable(false);
         }
-    }
-
-    @FXML
-    public void onTreeRightClicked() {
     }
 
 }

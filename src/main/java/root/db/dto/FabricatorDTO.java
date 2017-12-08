@@ -9,7 +9,7 @@ public class FabricatorDTO extends AbstractDTO {
     private final List<ContentDTO> contents;
 
     public FabricatorDTO(FabricatorEntity entity, List<ContentDTO> contents) {
-        super(entity.getId(), entity.getName().getValue());
+        super(entity.getId(), entity.getName().getValue(), null);
         this.contents = contents;
     }
 
