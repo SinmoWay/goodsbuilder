@@ -1,6 +1,6 @@
 package root.db.type;
 
-public enum ProductType {
+public enum ProductType implements NodeType {
 
     CARTON("Подарки в картоне", "carton", false),
     TEXTILE("Подарки в текстиле", "textile", false),
@@ -22,6 +22,7 @@ public enum ProductType {
         this.defective = defective;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }

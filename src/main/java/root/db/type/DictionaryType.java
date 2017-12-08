@@ -1,6 +1,6 @@
 package root.db.type;
 
-public enum DictionaryType {
+public enum DictionaryType implements NodeType {
 
     //добавилось значение? Добавь в data.sql
     CONTENT_NAME("Название товара"),
@@ -12,6 +12,7 @@ public enum DictionaryType {
         this.description = description;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }

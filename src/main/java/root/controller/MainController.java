@@ -111,7 +111,7 @@ public class MainController extends AbstractController {
     @FXML
     public void onAdd() {
         if (!dicValue.getController().isShown()) {
-            dicValue.getController().setInputText("");
+//            dicValue.getController().setDTO(new DictionaryValueDTO(currentItem.));
             dicValue.startWindow(new Stage());
         }
     }
@@ -129,7 +129,7 @@ public class MainController extends AbstractController {
     public void onEdit() throws IOException {
         if (!dicValue.getController().isShown()) {
             if (currentItem instanceof DictionaryValueDTO) {
-                dicValue.getController().setInputText(currentItem.getNodeText());
+                dicValue.getController().setDTO((DictionaryValueDTO) currentItem);
                 dicValue.startWindow(new Stage());
             }
         }

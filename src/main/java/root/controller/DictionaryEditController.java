@@ -5,15 +5,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import root.db.dto.DictionaryValueDTO;
+import root.db.service.DictionaryService;
 
 import javax.annotation.PostConstruct;
 
 public class DictionaryEditController extends AbstractController {
 
-    private String inputText = null;
+    private DictionaryValueDTO dto = null;
 
     @FXML
     private TextField valueBox;
+
+    @Autowired
+    private DictionaryService dictionaryService;
 
     @Override
     @PostConstruct
@@ -24,8 +30,8 @@ public class DictionaryEditController extends AbstractController {
     public EventHandler<WindowEvent> onStart() {
         return event -> {
             setShown(true);
-            if (valueBox != null) {
-                valueBox.setText(inputText);
+            if (dto != null) {
+                valueBox.setText(dto.getNodeText());
             } else {
                 valueBox.setText("");
             }
@@ -36,22 +42,31 @@ public class DictionaryEditController extends AbstractController {
     public EventHandler<WindowEvent> onEnd() {
         return event -> {
             setShown(false);
-            inputText = null;
+            dto = null;
         };
     }
 
     @FXML
     public void onSave() {
+        if (dto == null) {
 
+        }
+        dto.setNodeText(valueBox.getText());
+        dictionaryService.saveOrUpdate(dto);
+        close();
     }
 
     @FXML
     public void onCancel() {
+        close();
+    }
+
+    private void close() {
         ((Stage) valueBox.getScene().getWindow()).hide();
     }
 
-    public void setInputText(String inputText) {
-        this.inputText = inputText;
+    public void setDTO(DictionaryValueDTO dto) {
+        this.dto = dto;
     }
 
 }

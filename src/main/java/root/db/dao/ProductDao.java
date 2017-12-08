@@ -2,6 +2,7 @@ package root.db.dao;
 
 import org.springframework.stereotype.Repository;
 import root.db.entity.ProductEntity;
+import root.db.type.ProductType;
 
 import java.util.List;
 
@@ -13,9 +14,10 @@ public class ProductDao extends AbstractDAO<ProductEntity> {
         return ProductEntity.class;
     }
 
-    public List<ProductEntity> getAll() {
+    public List<ProductEntity> getAllByType(ProductType currType) {
         return sessionFactory.getCurrentSession()
-                .getNamedQuery("ProductEntity.getAll")
+                .getNamedQuery("ProductEntity.getAllByType")
+                .setParameter("currType", currType)
                 .list();
     }
 

@@ -7,6 +7,7 @@ import root.db.dto.AbstractDTO;
 import root.db.service.DictionaryService;
 import root.db.service.ProductService;
 import root.db.type.DictionaryType;
+import root.db.type.ProductType;
 
 @Service
 public final class TreeBuilder {
@@ -18,19 +19,25 @@ public final class TreeBuilder {
 
     public TreeItem<AbstractDTO> getProductsNode() {
         TreeItem<AbstractDTO> products = new TreeItem<>(new AbstractDTO("Товары"));
-        productService.getAllInited().forEach(product -> {
-            TreeItem<AbstractDTO> productItem = new TreeItem<>(product);
+        for (ProductType type : ProductType.values()) {
+            TreeItem<AbstractDTO> typedProduct = new TreeItem<>(new AbstractDTO(type.getDescription()));
 
-            product.getFabricators().forEach(fabricator -> {
-                TreeItem<AbstractDTO> fabricatorItem = new TreeItem<>(fabricator);
+            productService.getAllInitedByType(type).forEach(product -> {
+                TreeItem<AbstractDTO> productItem = new TreeItem<>(product);
 
-                fabricator.getContents().forEach(content -> fabricatorItem.getChildren().add(new TreeItem<>(content)));
+                product.getFabricators().forEach(fabricator -> {
+                    TreeItem<AbstractDTO> fabricatorItem = new TreeItem<>(fabricator);
 
-                productItem.getChildren().add(fabricatorItem);
+                    fabricator.getContents().forEach(content -> fabricatorItem.getChildren().add(new TreeItem<>(content)));
+
+                    productItem.getChildren().add(fabricatorItem);
+                });
+
+                typedProduct.getChildren().add(productItem);
             });
 
-            products.getChildren().add(productItem);
-        });
+            products.getChildren().add(typedProduct);
+        }
         return products;
     }
 

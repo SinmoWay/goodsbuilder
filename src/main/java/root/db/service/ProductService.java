@@ -9,6 +9,7 @@ import root.db.dto.ContentDTO;
 import root.db.dto.FabricatorDTO;
 import root.db.dto.ProductDTO;
 import root.db.entity.ProductEntity;
+import root.db.type.ProductType;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,8 +27,8 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ProductDTO> getAllInited() {
-        return productDao.getAll()
+    public List<ProductDTO> getAllInitedByType(ProductType type) {
+        return productDao.getAllByType(type)
                 .stream()
                 .filter(Objects::nonNull)
                 .map(product -> {

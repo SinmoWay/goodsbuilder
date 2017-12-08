@@ -1,13 +1,15 @@
 package root.db.entity;
 
+import root.db.type.ProductType;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @NamedQueries({
         @NamedQuery(
-                name = "ProductEntity.getAll",
-                query = "SELECT pe FROM ProductEntity pe ORDER BY pe.id"
+                name = "ProductEntity.getAllByType",
+                query = "SELECT pe FROM ProductEntity pe WHERE pe.type = :currType ORDER BY pe.id"
         )
 })
 @Entity
@@ -21,6 +23,10 @@ public class ProductEntity {
 
     @Column(name = "IMAGE_NAME")
     private String image_name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TYPE")
+    private ProductType type;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -52,6 +58,14 @@ public class ProductEntity {
 
     public void setImage_name(String image_name) {
         this.image_name = image_name;
+    }
+
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -93,8 +107,9 @@ public class ProductEntity {
 
         ProductEntity that = (ProductEntity) o;
 
-        if (id != that.id) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (image_name != null ? !image_name.equals(that.image_name) : that.image_name != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
@@ -103,8 +118,9 @@ public class ProductEntity {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (image_name != null ? image_name.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (weight != null ? weight.hashCode() : 0);

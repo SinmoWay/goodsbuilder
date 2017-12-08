@@ -12,6 +12,10 @@ public abstract class AbstractDAO<T> {
     @Autowired
     protected SessionFactory sessionFactory;
 
+    public T get(Serializable id) {
+        return sessionFactory.getCurrentSession().get(getClazz(), id);
+    }
+
     public void save(T object) {
         sessionFactory.getCurrentSession().saveOrUpdate(object);
     }
@@ -28,8 +32,8 @@ public abstract class AbstractDAO<T> {
         return (T) sessionFactory.getCurrentSession().merge(object);
     }
 
-    public void delete(Serializable id){
-        Object loaded = sessionFactory.getCurrentSession().load(getClazz(), id);
+    public void delete(Serializable id) {
+        T loaded = sessionFactory.getCurrentSession().load(getClazz(), id);
         sessionFactory.getCurrentSession()
                 .delete(loaded);
     }

@@ -1,13 +1,17 @@
 package root.db.dto;
 
+import root.db.type.NodeType;
+
 public class AbstractDTO {
 
-    protected final Integer id;
-    protected final String nodeText;
+    protected Integer id;
+    protected String nodeText;
+    protected NodeType nodeType;
 
     public AbstractDTO(String nodeText) {
         id = null;
         this.nodeText = nodeText;
+
     }
 
     protected AbstractDTO(Integer id, String nodeText) {
@@ -19,8 +23,16 @@ public class AbstractDTO {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getNodeText() {
         return nodeText;
+    }
+
+    public void setNodeText(String nodeText) {
+        this.nodeText = nodeText;
     }
 
     @Override
