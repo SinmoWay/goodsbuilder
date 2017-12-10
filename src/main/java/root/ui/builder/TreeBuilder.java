@@ -19,6 +19,8 @@ public final class TreeBuilder {
 
     public TreeItem<AbstractDTO> getProductsNode() {
         TreeItem<AbstractDTO> products = new TreeItem<>(new AbstractDTO("Товары", null));
+        products.setExpanded(true);
+
         for (ProductType type : ProductType.values()) {
             TreeItem<AbstractDTO> typedProduct = new TreeItem<>(new AbstractDTO(type.getDescription(), type));
 

@@ -8,6 +8,7 @@ import root.ui.window.AbstractWindow;
 public abstract class AbstractController {
 
     protected AbstractWindow window;
+    protected EventHandler<WindowEvent> onEndEvent;
 
     //Тут нет инъекций спринга
     @FXML
@@ -16,6 +17,10 @@ public abstract class AbstractController {
 
     public <T extends AbstractWindow> void setThisWindow(T window) {
         this.window = window;
+    }
+
+    public void setOnEndEvent(EventHandler<WindowEvent> onEndEvent) {
+        this.onEndEvent = onEndEvent;
     }
 
     public abstract void init();

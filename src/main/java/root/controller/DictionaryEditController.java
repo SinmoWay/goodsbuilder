@@ -16,6 +16,7 @@ public class DictionaryEditController extends AbstractController {
     private static final String BEGIN_ADD = "Создание: ";
     private static final String BEGIN_EDIT = "Редактирование: ";
 
+
     private DictionaryValueDTO dto = null;
 
     @FXML
@@ -34,7 +35,7 @@ public class DictionaryEditController extends AbstractController {
     @Override
     public EventHandler<WindowEvent> onStart() {
         return event -> {
-            if(dto == null) {
+            if (dto == null) {
                 window.closeWindow();
             }
             headerLabel.setText((dto.getId() == null ? BEGIN_ADD : BEGIN_EDIT) + dto.getDictionary().getName().getDescription());
@@ -46,16 +47,18 @@ public class DictionaryEditController extends AbstractController {
     public EventHandler<WindowEvent> onEnd() {
         return event -> {
             dto = null;
+            if (onEndEvent != null) {
+                onEndEvent.handle(event);
+            }
         };
     }
 
     @FXML
     public void onSave() {
-        if (dto == null) {
-
+        if (dto != null) {
+            dto.setNodeText(valueBox.getText());
+            dictionaryService.saveOrUpdate(dto);
         }
-        dto.setNodeText(valueBox.getText());
-        dictionaryService.saveOrUpdate(dto);
         window.closeWindow();
     }
 

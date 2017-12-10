@@ -4,9 +4,9 @@ import root.controller.ProductController;
 
 import java.io.IOException;
 
-public class ProductWindow extends AbstractWindow<ProductController> {
+public class ProductEditWindow extends AbstractWindow<ProductController> {
 
-    public ProductWindow() throws IOException {
+    public ProductEditWindow() throws IOException {
         super("window/productEdit.fxml", "Товар", false);
     }
 

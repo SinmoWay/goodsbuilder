@@ -7,7 +7,7 @@ import root.controller.MainController;
 import root.controller.ProductController;
 import root.ui.window.DictionaryEditWindow;
 import root.ui.window.MainWindow;
-import root.ui.window.ProductWindow;
+import root.ui.window.ProductEditWindow;
 
 import java.io.IOException;
 
@@ -35,8 +35,8 @@ public class WindowConfigurations {
     }
 
     @Bean
-    public ProductWindow getProdEdWindow() throws IOException {
-        return new ProductWindow();
+    public ProductEditWindow getProdEdWindow() throws IOException {
+        return new ProductEditWindow();
     }
 
     @Bean

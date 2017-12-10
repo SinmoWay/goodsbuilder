@@ -17,15 +17,18 @@ import root.db.type.ProductType;
 import root.ui.builder.ImgResourceBuilder;
 import root.ui.builder.TreeBuilder;
 import root.ui.window.DictionaryEditWindow;
-import root.ui.window.ProductWindow;
+import root.ui.window.ProductEditWindow;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Random;
 
 public class MainController extends AbstractController {
 
+    private static final Random random = new Random();
+
     @Autowired
-    private ProductWindow prodWindow;
+    private ProductEditWindow prodWindow;
     @Autowired
     private DictionaryEditWindow dicWindow;
     @Autowired
@@ -83,6 +86,8 @@ public class MainController extends AbstractController {
     @Override
     public EventHandler<WindowEvent> onStart() {
         return event -> {
+            dicWindow.getController().setOnEndEvent(endEvent -> onRefresh());
+            prodWindow.getController().setOnEndEvent(endEvent -> onRefresh());
             onRefresh();
         };
     }
@@ -126,6 +131,8 @@ public class MainController extends AbstractController {
             dicWindow.startWindow(new Stage());
         } else if (currentItem.getNodeType() instanceof ProductType && !prodWindow.isShown()) {
             prodWindow.startWindow(new Stage());
+        } else {
+            getRandomFaceAndText();
         }
     }
 
@@ -145,9 +152,6 @@ public class MainController extends AbstractController {
             dicWindow.startWindow(new Stage());
         } else if (currentItem instanceof ProductDTO && !prodWindow.isShown()) {
             prodWindow.startWindow(new Stage());
-        } else {
-            ImgResourceBuilder.initSqView(statusImg, ImgResource.FACE_NORMAL, 20);
-            infoText.setText("Черти что делаешь");
         }
     }
 
@@ -171,6 +175,34 @@ public class MainController extends AbstractController {
             editButton.setDisable(false);
             removeButton.setDisable(false);
         }
+    }
+
+    private void getRandomFaceAndText() {
+        String phrase;
+        switch (random.nextInt(7)) {
+            case 0:
+                phrase = "Черти что делаешь";
+                break;
+            case 1:
+                phrase = "И чего ты ожидаешь?";
+                break;
+            case 2:
+                phrase = "Зачем? Как? Почему?";
+                break;
+            case 3:
+                phrase = "Хватит делать фигню";
+                break;
+            case 4:
+                phrase = "Да-да, молодец. Ничего не произойдет";
+                break;
+            case 5:
+                phrase = "Ткни еще раз эту кнопку. Просто так";
+                break;
+            default:
+                phrase = "Бессмысленное действие";
+        }
+        ImgResourceBuilder.initSqView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
+        infoText.setText(phrase);
     }
 
 }

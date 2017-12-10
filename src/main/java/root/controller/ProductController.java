@@ -11,12 +11,17 @@ public class ProductController extends AbstractController {
 
     @Override
     public EventHandler<WindowEvent> onStart() {
-        return event -> {};
+        return event -> {
+        };
     }
 
     @Override
     public EventHandler<WindowEvent> onEnd() {
-        return event -> {};
+        return event -> {
+            if (onEndEvent != null) {
+                onEndEvent.handle(event);
+            }
+        };
     }
 
 }

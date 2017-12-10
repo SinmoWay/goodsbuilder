@@ -55,19 +55,24 @@ public abstract class AbstractWindow<T extends AbstractController> {
         }
         this.stage.setTitle(title);
         this.stage.setScene(scene);
+
         this.stage.getIcons().add(new Image(ImgResource.TUX.path()));
+
         this.stage.addEventHandler(WindowEvent.WINDOW_SHOWING, controller.onStart());
         this.stage.addEventHandler(WindowEvent.WINDOW_HIDING, controller.onEnd());
-        this.stage.setResizable(true);
+
         this.stage.centerOnScreen();
         this.stage.setResizable(resizable);
+
         this.shown = true;
         this.stage.show();
     }
 
     public void closeWindow() {
-        this.shown = false;
-        this.stage.close();
+        if (shown) {
+            this.shown = false;
+            this.stage.close();
+        }
     }
 
 }
