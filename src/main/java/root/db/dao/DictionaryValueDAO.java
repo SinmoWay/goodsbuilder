@@ -7,7 +7,7 @@ import root.db.type.DictionaryType;
 import java.util.List;
 
 @Repository
-public class DictionaryValueDao extends AbstractDAO<DictionaryValueEntity> {
+public class DictionaryValueDAO extends AbstractDAO<DictionaryValueEntity> {
 
     @Override
     protected Class<DictionaryValueEntity> getClazz() {

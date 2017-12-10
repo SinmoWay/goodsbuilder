@@ -1,23 +1,28 @@
 package root.db.entity;
 
-
 import root.db.type.DictionaryType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "DictionaryEntity.getByName",
+                query = "SELECT de FROM DictionaryEntity de WHERE de.name = :dic"
+        )
+})
 @Entity
 @Table(name = "DICTIONARY")
 public class DictionaryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", unique = true, nullable = false)
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = false, unique = true)
     private DictionaryType name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "dictionary", cascade = CascadeType.ALL)

@@ -7,7 +7,7 @@ import root.db.type.ProductType;
 import java.util.List;
 
 @Repository
-public class ProductDao extends AbstractDAO<ProductEntity> {
+public class ProductDAO extends AbstractDAO<ProductEntity> {
 
     @Override
     protected Class<ProductEntity> getClazz() {

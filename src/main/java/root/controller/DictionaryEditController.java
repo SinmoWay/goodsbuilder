@@ -34,8 +34,9 @@ public class DictionaryEditController extends AbstractController {
     @Override
     public EventHandler<WindowEvent> onStart() {
         return event -> {
-            setShown(true);
-            if(dto == null) close();
+            if(dto == null) {
+                window.closeWindow();
+            }
             headerLabel.setText((dto.getId() == null ? BEGIN_ADD : BEGIN_EDIT) + dto.getDictionary().getName().getDescription());
             valueBox.setText(dto.getId() == null ? "" : dto.getNodeText());
         };
@@ -44,7 +45,6 @@ public class DictionaryEditController extends AbstractController {
     @Override
     public EventHandler<WindowEvent> onEnd() {
         return event -> {
-            setShown(false);
             dto = null;
         };
     }
@@ -56,16 +56,12 @@ public class DictionaryEditController extends AbstractController {
         }
         dto.setNodeText(valueBox.getText());
         dictionaryService.saveOrUpdate(dto);
-        close();
+        window.closeWindow();
     }
 
     @FXML
     public void onCancel() {
-        close();
-    }
-
-    private void close() {
-        valueBox.getScene().getWindow().hide();
+        window.closeWindow();
     }
 
     public void setDTO(DictionaryValueDTO dto) {

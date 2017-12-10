@@ -9,10 +9,15 @@ import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.db.dto.AbstractDTO;
 import root.db.dto.DictionaryValueDTO;
+import root.db.dto.ProductDTO;
+import root.db.service.DictionaryService;
+import root.db.type.DictionaryType;
 import root.db.type.ImgResource;
+import root.db.type.ProductType;
 import root.ui.builder.ImgResourceBuilder;
 import root.ui.builder.TreeBuilder;
 import root.ui.window.DictionaryEditWindow;
+import root.ui.window.ProductWindow;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -20,7 +25,13 @@ import java.io.IOException;
 public class MainController extends AbstractController {
 
     @Autowired
-    private DictionaryEditWindow dicValue;
+    private ProductWindow prodWindow;
+    @Autowired
+    private DictionaryEditWindow dicWindow;
+    @Autowired
+    private TreeBuilder treeBuilder;
+    @Autowired
+    private DictionaryService dictionaryService;
 
     //MENU
     @FXML
@@ -32,9 +43,9 @@ public class MainController extends AbstractController {
 
     //TOOLBAR
     @FXML
-    private Button addButton;
-    @FXML
     private Button refreshButton;
+    @FXML
+    private Button addButton;
     @FXML
     private Button editButton;
     @FXML
@@ -50,9 +61,6 @@ public class MainController extends AbstractController {
     @FXML
     private ImageView statusImg;
 
-    @Autowired
-    private TreeBuilder treeBuilder;
-
     private AbstractDTO currentItem = null;
 
     @Override
@@ -63,19 +71,18 @@ public class MainController extends AbstractController {
         unloadButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.UNLOAD, 25));
         uploadButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.UPLOAD, 25));
 
-        addButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.ADD, 25));
         refreshButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REFRESH, 25));
+        addButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.ADD, 25));
         editButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.EDIT, 25));
         removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
 
-        infoText.setText("Успешно загружено");
         ImgResourceBuilder.initSqView(statusImg, ImgResource.FACE_GOOD, 20);
+        infoText.setText("Успешно загружено");
     }
 
     @Override
     public EventHandler<WindowEvent> onStart() {
         return event -> {
-            setShown(true);
             onRefresh();
         };
     }
@@ -83,8 +90,12 @@ public class MainController extends AbstractController {
     @Override
     public EventHandler<WindowEvent> onEnd() {
         return event -> {
-            dicValue.getStage().close();
-            setShown(false);
+            if (dicWindow.isShown()) {
+                dicWindow.closeWindow();
+            }
+            if (prodWindow.isShown()) {
+                prodWindow.closeWindow();
+            }
         };
     }
 
@@ -110,9 +121,11 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onAdd() {
-        if (!dicValue.getController().isShown()) {
-            dicValue.getController().setDTO(new DictionaryValueDTO(((DictionaryValueDTO) currentItem).getDictionary()));
-            dicValue.startWindow(new Stage());
+        if (currentItem.getNodeType() instanceof DictionaryType && !dicWindow.isShown()) {
+            dicWindow.getController().setDTO(new DictionaryValueDTO(dictionaryService.getDictionary((DictionaryType) currentItem.getNodeType())));
+            dicWindow.startWindow(new Stage());
+        } else if (currentItem.getNodeType() instanceof ProductType && !prodWindow.isShown()) {
+            prodWindow.startWindow(new Stage());
         }
     }
 
@@ -127,11 +140,14 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onEdit() throws IOException {
-        if (!dicValue.getController().isShown()) {
-            if (currentItem instanceof DictionaryValueDTO) {
-                dicValue.getController().setDTO((DictionaryValueDTO) currentItem);
-                dicValue.startWindow(new Stage());
-            }
+        if (currentItem instanceof DictionaryValueDTO && !dicWindow.isShown()) {
+            dicWindow.getController().setDTO((DictionaryValueDTO) currentItem);
+            dicWindow.startWindow(new Stage());
+        } else if (currentItem instanceof ProductDTO && !prodWindow.isShown()) {
+            prodWindow.startWindow(new Stage());
+        } else {
+            ImgResourceBuilder.initSqView(statusImg, ImgResource.FACE_NORMAL, 20);
+            infoText.setText("Черти что делаешь");
         }
     }
 
@@ -142,6 +158,10 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onTreeLeftClicked() {
+        if (addButton.isDisable()) {
+            addButton.setDisable(false);
+        }
+
         TreeItem<AbstractDTO> item = mainTree.getFocusModel().getFocusedItem();
         currentItem = item == null ? null : item.getValue();
         if (currentItem == null || currentItem.getId() == null) {

@@ -3,8 +3,10 @@ package root.db.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import root.db.dao.DictionaryValueDao;
+import root.db.dao.DictionaryDAO;
+import root.db.dao.DictionaryValueDAO;
 import root.db.dto.DictionaryValueDTO;
+import root.db.entity.DictionaryEntity;
 import root.db.entity.DictionaryValueEntity;
 import root.db.type.DictionaryType;
 
@@ -16,7 +18,14 @@ import java.util.stream.Collectors;
 public class DictionaryService {
 
     @Autowired
-    private DictionaryValueDao dictionaryValueDao;
+    private DictionaryDAO dictionaryDao;
+    @Autowired
+    private DictionaryValueDAO dictionaryValueDao;
+
+    @Transactional
+    public DictionaryEntity getDictionary(DictionaryType type) {
+        return dictionaryDao.getByName(type);
+    }
 
     @Transactional
     public List<DictionaryValueDTO> getAllValuesByDictionary(DictionaryType dictionary) {
@@ -32,6 +41,7 @@ public class DictionaryService {
 
         if (dto.getId() == null) {
             entity = new DictionaryValueEntity();
+            entity.setDictionary(dto.getDictionary());
         } else {
             entity = dictionaryValueDao.get(dto.getId());
         }

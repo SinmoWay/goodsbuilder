@@ -36,6 +36,14 @@ public class AbstractDTO {
         this.nodeText = nodeText;
     }
 
+    public NodeType getNodeType() {
+        return nodeType;
+    }
+
+    public void setNodeType(NodeType nodeType) {
+        this.nodeType = nodeType;
+    }
+
     @Override
     public String toString() {
         return this.nodeText;

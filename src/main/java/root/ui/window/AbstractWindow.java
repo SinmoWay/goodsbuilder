@@ -15,54 +15,59 @@ import java.io.InputStream;
 public abstract class AbstractWindow<T extends AbstractController> {
 
     protected final String title;
-    protected final String view_path;
+    protected final String viewPath;
+    protected final boolean resizable;
     protected final Parent view;
     protected final T controller;
 
-    protected Stage stage;
-    protected Scene scene;
+    private Stage stage;
+    private Scene scene;
 
-    protected AbstractWindow(String view_path, String title) throws IOException {
+    private boolean shown = false;
+
+    protected AbstractWindow(String viewPath, String title, boolean resizable) throws IOException {
         this.title = title;
-        this.view_path = view_path;
-        try (InputStream fxmlStream = getClass().getClassLoader().getResourceAsStream(view_path)) {
+        this.viewPath = viewPath;
+        this.resizable = resizable;
+        try (InputStream fxmlStream = getClass().getClassLoader().getResourceAsStream(viewPath)) {
             FXMLLoader loader = new FXMLLoader();
             loader.load(fxmlStream);
             this.view = loader.getRoot();
             this.controller = loader.getController();
+            this.controller.setThisWindow(this);
         }
-    }
-
-    public String getViewPath() {
-        return view_path;
-    }
-
-    public Parent getView() {
-        return view;
     }
 
     public T getController() {
         return controller;
     }
 
-    public Stage getStage() {
-        return stage;
+    public boolean isShown() {
+        return shown;
     }
 
-    public void startWindow(Stage stage) {
+    public void startWindow(Stage newStage) {
         if (this.stage == null) {
-            this.stage = stage;
+            this.stage = newStage;
         }
         if (this.scene == null) {
             this.scene = new Scene(view);
         }
-        stage.setScene(scene);
-        stage.getIcons().add(new Image(ImgResource.TUX.path()));
-        stage.addEventHandler(WindowEvent.WINDOW_SHOWN, controller.onStart());
-        stage.addEventHandler(WindowEvent.WINDOW_HIDDEN, controller.onEnd());
-        stage.setResizable(true);
-        stage.centerOnScreen();
-        stage.show();
+        this.stage.setTitle(title);
+        this.stage.setScene(scene);
+        this.stage.getIcons().add(new Image(ImgResource.TUX.path()));
+        this.stage.addEventHandler(WindowEvent.WINDOW_SHOWING, controller.onStart());
+        this.stage.addEventHandler(WindowEvent.WINDOW_HIDING, controller.onEnd());
+        this.stage.setResizable(true);
+        this.stage.centerOnScreen();
+        this.stage.setResizable(resizable);
+        this.shown = true;
+        this.stage.show();
+    }
+
+    public void closeWindow() {
+        this.shown = false;
+        this.stage.close();
     }
 
 }
