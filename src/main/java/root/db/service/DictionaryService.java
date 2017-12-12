@@ -1,5 +1,6 @@
 package root.db.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class DictionaryService {
+public class DictionaryService extends AbstractService<DictionaryValueDAO> {
+
+    private final DictionaryDAO dictionaryDao;
 
     @Autowired
-    private DictionaryDAO dictionaryDao;
-    @Autowired
-    private DictionaryValueDAO dictionaryValueDao;
+    public DictionaryService(DictionaryDAO dictionaryDao, DictionaryValueDAO dictionaryValueDao) {
+        super(dictionaryValueDao);
+        this.dictionaryDao = dictionaryDao;
+    }
 
     @Transactional
     public DictionaryEntity getDictionary(DictionaryType type) {
@@ -28,8 +32,10 @@ public class DictionaryService {
     }
 
     @Transactional
-    public List<DictionaryValueDTO> getAllValuesByDictionary(DictionaryType dictionary) {
-        return dictionaryValueDao.getAllByDictionary(dictionary).stream()
+    public List<DictionaryValueDTO> getAllValuesByDictionaryType(DictionaryType dictionary) {
+        DictionaryEntity dictionaryEntity = dictionaryDao.getByName(dictionary);
+        Hibernate.initialize(dictionaryEntity.getValues());
+        return dictionaryEntity.getValues().stream()
                 .filter(Objects::nonNull)
                 .map(DictionaryValueDTO::new)
                 .collect(Collectors.toList());
@@ -43,11 +49,11 @@ public class DictionaryService {
             entity = new DictionaryValueEntity();
             entity.setDictionary(dto.getDictionary());
         } else {
-            entity = dictionaryValueDao.get(dto.getId());
+            entity = dao.get(dto.getId());
         }
 
         entity.setValue(dto.getNodeText());
-        dictionaryValueDao.save(entity);
+        dao.save(entity);
     }
 
 }

@@ -2,12 +2,6 @@ package root.db.entity;
 
 import javax.persistence.*;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "DictionaryValueEntity.getAllByDictionary",
-                query = "SELECT dv FROM DictionaryValueEntity dv WHERE dv.dictionary.name = :dic ORDER BY dv.id"
-        )
-})
 @Entity
 @Table(name = "DICTIONARY_VALUE")
 public class DictionaryValueEntity {
@@ -17,7 +11,7 @@ public class DictionaryValueEntity {
     @Column(name = "ID", unique = true, nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_DICTIONARY", nullable = false)
     private DictionaryEntity dictionary;
 

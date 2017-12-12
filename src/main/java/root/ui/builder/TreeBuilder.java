@@ -45,13 +45,13 @@ public final class TreeBuilder {
 
     public TreeItem<AbstractDTO> getContentNames() {
         TreeItem<AbstractDTO> contentNames = new TreeItem<>(new AbstractDTO(DictionaryType.CONTENT_NAME.getDescription(), DictionaryType.CONTENT_NAME));
-        dictionaryService.getAllValuesByDictionary(DictionaryType.CONTENT_NAME).forEach(dicValue -> contentNames.getChildren().add(new TreeItem<>(dicValue)));
+        dictionaryService.getAllValuesByDictionaryType(DictionaryType.CONTENT_NAME).forEach(dicValue -> contentNames.getChildren().add(new TreeItem<>(dicValue)));
         return contentNames;
     }
 
     public TreeItem<AbstractDTO> getFabricatorName() {
         TreeItem<AbstractDTO> fabricatorNames = new TreeItem<>(new AbstractDTO(DictionaryType.FABRICATOR_NAME.getDescription(), DictionaryType.FABRICATOR_NAME));
-        dictionaryService.getAllValuesByDictionary(DictionaryType.FABRICATOR_NAME).forEach(dicValue -> fabricatorNames.getChildren().add(new TreeItem<>(dicValue)));
+        dictionaryService.getAllValuesByDictionaryType(DictionaryType.FABRICATOR_NAME).forEach(dicValue -> fabricatorNames.getChildren().add(new TreeItem<>(dicValue)));
         return fabricatorNames;
     }
 

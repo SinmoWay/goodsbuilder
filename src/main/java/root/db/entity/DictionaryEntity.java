@@ -25,7 +25,7 @@ public class DictionaryEntity {
     @Column(name = "NAME", nullable = false, unique = true)
     private DictionaryType name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "dictionary", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dictionary", cascade = CascadeType.ALL)
     private List<DictionaryValueEntity> values = new ArrayList<>();
 
     public Integer getId() {

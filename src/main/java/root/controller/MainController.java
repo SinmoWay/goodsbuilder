@@ -3,6 +3,7 @@ package root.controller;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -11,6 +12,7 @@ import root.db.dto.AbstractDTO;
 import root.db.dto.DictionaryValueDTO;
 import root.db.dto.ProductDTO;
 import root.db.service.DictionaryService;
+import root.db.service.ProductService;
 import root.db.type.DictionaryType;
 import root.db.type.ImgResource;
 import root.db.type.ProductType;
@@ -21,6 +23,7 @@ import root.ui.window.ProductEditWindow;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Random;
 
 public class MainController extends AbstractController {
@@ -35,6 +38,8 @@ public class MainController extends AbstractController {
     private TreeBuilder treeBuilder;
     @Autowired
     private DictionaryService dictionaryService;
+    @Autowired
+    private ProductService productService;
 
     //MENU
     @FXML
@@ -126,18 +131,23 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onAdd() {
+        if (currentItem == null) {
+            setChoseSmtAdvice();
+            return;
+        }
         if (currentItem.getNodeType() instanceof DictionaryType && !dicWindow.isShown()) {
             dicWindow.getController().setDTO(new DictionaryValueDTO(dictionaryService.getDictionary((DictionaryType) currentItem.getNodeType())));
             dicWindow.startWindow(new Stage());
         } else if (currentItem.getNodeType() instanceof ProductType && !prodWindow.isShown()) {
             prodWindow.startWindow(new Stage());
         } else {
-            getRandomFaceAndText();
+            setRandomFaceAndText();
         }
     }
 
     @FXML
     public void onRefresh() {
+        currentItem = null;
         TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все", null));
         root.setExpanded(true);
         root.getChildren().addAll(treeBuilder.getProductsNode(), treeBuilder.getFabricatorName(), treeBuilder.getContentNames());
@@ -147,6 +157,10 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onEdit() throws IOException {
+        if (currentItem == null) {
+            setChoseSmtAdvice();
+            return;
+        }
         if (currentItem instanceof DictionaryValueDTO && !dicWindow.isShown()) {
             dicWindow.getController().setDTO((DictionaryValueDTO) currentItem);
             dicWindow.startWindow(new Stage());
@@ -157,7 +171,27 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onRemove() {
-        infoText.setText("Ремува");
+        if (currentItem == null) {
+            setChoseSmtAdvice();
+            return;
+        }
+        if (currentItem.getId() != null) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Удалить");
+            alert.setHeaderText("Действительно ли удалить запись?");
+            alert.setContentText("Запись: \"" + currentItem.getNodeText() + "\" будет удалена");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK && currentItem instanceof DictionaryValueDTO) {
+                dictionaryService.delete(currentItem.getId());
+                onRefresh();
+            } else if (result.get() == ButtonType.OK && currentItem instanceof ProductDTO) {
+                productService.delete(currentItem.getId());
+                onRefresh();
+            }
+        } else {
+            setRandomFaceAndText();
+        }
     }
 
     @FXML
@@ -177,7 +211,7 @@ public class MainController extends AbstractController {
         }
     }
 
-    private void getRandomFaceAndText() {
+    private void setRandomFaceAndText() {
         String phrase;
         switch (random.nextInt(7)) {
             case 0:
@@ -203,6 +237,11 @@ public class MainController extends AbstractController {
         }
         ImgResourceBuilder.initSqView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
         infoText.setText(phrase);
+    }
+
+    private void setChoseSmtAdvice() {
+        ImgResourceBuilder.initSqView(statusImg, ImgResource.FACE_NORMAL, 20);
+        infoText.setText("Нужно хоть что-нибудь выбрать");
     }
 
 }

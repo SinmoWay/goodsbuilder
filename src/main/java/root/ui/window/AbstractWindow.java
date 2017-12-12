@@ -71,7 +71,7 @@ public abstract class AbstractWindow<T extends AbstractController> {
     public void closeWindow() {
         if (shown) {
             this.shown = false;
-            this.stage.close();
+            this.stage.hide();
         }
     }
 

@@ -16,19 +16,21 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductService {
+public class ProductService extends AbstractService<ProductDAO> {
 
     @Autowired
-    private ProductDAO productDao;
+    public ProductService(ProductDAO dao) {
+        super(dao);
+    }
 
     @Transactional
     public void save(ProductEntity entity) {
-        productDao.save(entity);
+        dao.save(entity);
     }
 
     @Transactional
     public List<ProductDTO> getAllInitedByType(ProductType type) {
-        return productDao.getAllByType(type)
+        return dao.getAllByType(type)
                 .stream()
                 .filter(Objects::nonNull)
                 .map(product -> {

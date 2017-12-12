@@ -37,7 +37,7 @@ public class ProductEntity {
     @Column(name = "WEIGHT")
     private Double weight;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "PRODUCT_FABRICATOR",
             joinColumns = {@JoinColumn(name = "ID_PRODUCT", nullable = false)},
