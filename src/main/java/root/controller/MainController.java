@@ -178,8 +178,8 @@ public class MainController extends AbstractController {
         if (currentItem.getId() != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Удалить");
-            alert.setHeaderText("Действительно ли удалить запись?");
-            alert.setContentText("Запись: \"" + currentItem.getNodeText() + "\" будет удалена");
+            alert.setHeaderText("Запись: \"" + currentItem.getNodeText() + "\" будет удалена");
+            alert.setContentText("Уверены, что хотите удалить эту запись?");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK && currentItem instanceof DictionaryValueDTO) {
