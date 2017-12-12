@@ -17,6 +17,7 @@ public enum ImgResource {
     TUX("tux"),
     RUB("rub"),
     SETTINGS("settings"),
+    EYE("eye"),
 
     UNLOAD("unload"),
     UPLOAD("upload");
