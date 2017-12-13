@@ -18,10 +18,18 @@ public final class ImgResourceBuilder {
         return imgView;
     }
 
-    public static void initSqView(ImageView imgView, ImgResource res, int size) {
+    public static void initView(ImageView imgView, ImgResource res) {
         imgView.setImage(new Image(res.path()));
+        setNiceToSee(imgView);
+    }
 
+    public static void initView(ImageView imgView, ImgResource res, int size) {
         setSqSize(imgView, size);
+        ImgResourceBuilder.initView(imgView, res);
+    }
+
+    public static void initView(ImageView imgView, String uri) {
+        imgView.setImage(new Image(uri));
         setNiceToSee(imgView);
     }
 

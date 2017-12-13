@@ -3,7 +3,6 @@ package root.controller;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -84,7 +83,7 @@ public class MainController extends AbstractController {
         editButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.EDIT, 25));
         removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
 
-        ImgResourceBuilder.initSqView(statusImg, ImgResource.FACE_GOOD, 20);
+        ImgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
         infoText.setText("Успешно загружено");
     }
 
@@ -176,12 +175,13 @@ public class MainController extends AbstractController {
             return;
         }
         if (currentItem.getId() != null) {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Удалить");
-            alert.setHeaderText("Запись: \"" + currentItem.getNodeText() + "\" будет удалена");
-            alert.setContentText("Уверены, что хотите удалить эту запись?");
+            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
 
-            Optional<ButtonType> result = alert.showAndWait();
+            confirmationDialog.setTitle("Удалить");
+            confirmationDialog.setHeaderText("Запись: \"" + currentItem.getNodeText() + "\" будет удалена");
+            confirmationDialog.setContentText("Уверены, что хотите удалить эту запись?");
+
+            Optional<ButtonType> result = confirmationDialog.showAndWait();
             if (result.get() == ButtonType.OK && currentItem instanceof DictionaryValueDTO) {
                 dictionaryService.delete(currentItem.getId());
                 onRefresh();
@@ -235,12 +235,12 @@ public class MainController extends AbstractController {
             default:
                 phrase = "Бессмысленное действие";
         }
-        ImgResourceBuilder.initSqView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
+        ImgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
         infoText.setText(phrase);
     }
 
     private void setChoseSmtAdvice() {
-        ImgResourceBuilder.initSqView(statusImg, ImgResource.FACE_NORMAL, 20);
+        ImgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
         infoText.setText("Нужно хоть что-нибудь выбрать");
     }
 
