@@ -2,14 +2,14 @@ package root.controller;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
+import root.db.dto.AbstractDTO;
 import root.db.type.ImgResource;
 import root.ui.builder.ImgResourceBuilder;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 
 public class ProductController extends AbstractController {
@@ -23,17 +23,28 @@ public class ProductController extends AbstractController {
     @FXML
     private TextField imgNameBox;
     @FXML
-    private TreeTableColumn contentColumn;
+    private TreeTableView<AbstractDTO> table;
     @FXML
-    private TreeTableColumn amountColumn;
+    private Button addButton;
+    @FXML
+    private Button editButton;
+    @FXML
+    private Button removeButton;
 
     @Override
+    @PostConstruct
     public void init() {
+        addButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.ADD, 25));
+        editButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.EDIT, 25));
+        removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
+        ImgResourceBuilder.initView(imgPlace, ImgResource.EYE);
     }
 
     @Override
     public EventHandler<WindowEvent> onStart() {
-        return event -> ImgResourceBuilder.initView(imgPlace, ImgResource.EYE);
+        return event -> {
+            table.setRoot(new TreeItem<>(new AbstractDTO("Состав", null)));
+        };
     }
 
     @Override
@@ -59,6 +70,20 @@ public class ProductController extends AbstractController {
 
             error.showAndWait();
         }
+    }
+
+    @FXML
+    public void onRowAdd() {
+    }
+
+    @FXML
+    public void onRowEdit() {
+
+    }
+
+    @FXML
+    public void onRowRemove() {
+
     }
 
     @FXML

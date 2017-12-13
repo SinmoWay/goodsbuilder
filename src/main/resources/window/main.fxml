@@ -5,62 +5,69 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="root.controller.MainController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="root.controller.MainController">
 
     <MenuBar maxHeight="25.0" minHeight="25.0" prefHeight="25.0" VBox.vgrow="NEVER">
         <Menu fx:id="menu" mnemonicParsing="false" onHidden="#onMenuHide" onShown="#onMenuShown" text="Меню">
-            <MenuItem fx:id="unloadButton" mnemonicParsing="false" onAction="#unloadJson" text="Выгрузить данные" />
-            <MenuItem fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadJson" text="Загрузить данные" />
+            <MenuItem fx:id="unloadButton" mnemonicParsing="false" onAction="#unloadJson" text="Выгрузить данные"/>
+            <MenuItem fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadJson" text="Загрузить данные"/>
         </Menu>
     </MenuBar>
 
-    <SplitPane dividerPositions="0.9493891797556719" orientation="VERTICAL" prefHeight="296.0" prefWidth="900.0" scaleShape="false" VBox.vgrow="ALWAYS">
-
+    <SplitPane dividerPositions="0.9493891797556719" orientation="VERTICAL" prefHeight="296.0" prefWidth="900.0"
+               scaleShape="false" VBox.vgrow="ALWAYS">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-         <children>
-            <SplitPane dividerPositions="0.08630393996247655" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <items>
-                  <AnchorPane maxHeight="40.0" minHeight="40.0" minWidth="0.0" prefHeight="40.0" prefWidth="160.0" SplitPane.resizableWithParent="false">
-                     <children>
-                        <ToolBar layoutX="46.0" layoutY="7.0" prefHeight="30.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <items>
-                              <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#onRefresh" prefHeight="25.0" prefWidth="25.0" />
-                              <Button fx:id="addButton" disable="true" mnemonicParsing="false" onAction="#onAdd" prefHeight="25.0" prefWidth="25.0" />
-                              <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#onEdit" prefHeight="25.0" prefWidth="25.0" />
-                              <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#onRemove" prefHeight="25.0" prefWidth="25.0" />
-                           </items>
-                        </ToolBar>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="160.0">
-                     <children>
-                        <TreeView fx:id="mainTree" layoutX="14.0" layoutY="14.0" minHeight="200.0" onMouseClicked="#onTreeLeftClicked" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-               </items>
+            <SplitPane dividerPositions="0.08630393996247655" orientation="VERTICAL" prefHeight="200.0"
+                       prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane maxHeight="40.0" minHeight="40.0" minWidth="0.0" prefHeight="40.0" prefWidth="160.0"
+                            SplitPane.resizableWithParent="false">
+                    <ToolBar layoutX="46.0" layoutY="7.0" prefHeight="30.0" prefWidth="200.0"
+                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#onRefresh"
+                                prefHeight="25.0" prefWidth="25.0"/>
+                        <Button fx:id="addButton" disable="true" mnemonicParsing="false" onAction="#onAdd"
+                                prefHeight="25.0" prefWidth="25.0"/>
+                        <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#onEdit"
+                                prefHeight="25.0" prefWidth="25.0"/>
+                        <Button fx:id="removeButton" disable="true" mnemonicParsing="false"
+                                onAction="#onRemove" prefHeight="25.0" prefWidth="25.0"/>
+                    </ToolBar>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="160.0">
+                    <TreeView fx:id="mainTree" layoutX="14.0" layoutY="14.0" minHeight="200.0"
+                              onMouseClicked="#onTreeLeftClicked" prefHeight="200.0" prefWidth="200.0"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
             </SplitPane>
-         </children>
-
         </AnchorPane>
 
-        <AnchorPane maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="898.0" SplitPane.resizableWithParent="false">
-            <Label text="Спасибо, что воспользовались нашим софтом" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+        <AnchorPane maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="898.0"
+                    SplitPane.resizableWithParent="false">
+            <Label text="Спасибо, что воспользовались нашим софтом" AnchorPane.bottomAnchor="5.0"
+                   AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
                 <font>
-                    <Font size="11.0" fx:id="x3" />
+                    <Font size="11.0"/>
                 </font>
                 <textFill>
-                    <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
+                    <Color blue="0.625" green="0.625" red="0.625"/>
                 </textFill>
             </Label>
-            <Label fx:id="infoText" layoutX="345.0" layoutY="5.0" text="Видишь текст? А его нет" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
+            <Label fx:id="infoText" layoutX="345.0" layoutY="5.0" text="Видишь текст? А его нет"
+                   AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
                 <font>
-                    <Font size="11.0" fx:id="x5" />
+                    <Font size="11.0"/>
                 </font>
                 <textFill>
-                    <Color blue="0.625" green="0.625" red="0.625" fx:id="x6" />
+                    <Color blue="0.625" green="0.625" red="0.625"/>
                 </textFill>
             </Label>
-         <ImageView fx:id="statusImg" fitHeight="20.0" fitWidth="20.0" layoutX="868.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0" />
+            <ImageView fx:id="statusImg" fitHeight="20.0" fitWidth="20.0" layoutX="868.0" layoutY="3.0"
+                       pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0"
+                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0"/>
         </AnchorPane>
     </SplitPane>
 </VBox>
