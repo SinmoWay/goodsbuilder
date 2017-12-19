@@ -4,7 +4,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<VBox maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0"
+<VBox maxHeight="450.0" maxWidth="650.0" minHeight="450.0" minWidth="650.0" prefHeight="450.0" prefWidth="650.0"
       xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="root.controller.ProductController">
     <AnchorPane VBox.vgrow="ALWAYS">
@@ -26,27 +26,34 @@
         <TextField fx:id="imgNameBox" layoutX="86.0" layoutY="74.0" AnchorPane.leftAnchor="120.0"
                    AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="85.0"/>
         <Button layoutX="300.0" layoutY="74.0" mnemonicParsing="false" onAction="#onImgShow" text="Показать"
-                AnchorPane.leftAnchor="315.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="85.0"/>
+                AnchorPane.leftAnchor="355.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="85.0"/>
+
+        <Label layoutX="10.0" layoutY="123.0" text="Цена" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="130.0"/>
+        <Label layoutX="216.0" layoutY="120.0" text="Вес" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="130.0"/>
+        <TextField fx:id="priceBox" layoutX="46.0" layoutY="116.0" AnchorPane.leftAnchor="45.0"
+                   AnchorPane.topAnchor="125.0"/>
+        <TextField fx:id="weightBox" layoutX="230.0" layoutY="125.0" AnchorPane.leftAnchor="230.0"
+                   AnchorPane.topAnchor="125.0"/>
 
         <TreeTableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true"
                        AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="310.0"
-                       AnchorPane.topAnchor="120.0">
+                       AnchorPane.topAnchor="160.0">
             <columnResizePolicy>
                 <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TreeTableView>
         <Button fx:id="addButton" layoutX="300.0" layoutY="130.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0"
                 minWidth="30.0" mnemonicParsing="false" onAction="#onRowAdd" prefHeight="30.0" prefWidth="30.0"
-                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="120.0"/>
+                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="160.0"/>
         <Button fx:id="editButton" layoutX="297.0" layoutY="154.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0"
                 minWidth="30.0" mnemonicParsing="false" onAction="#onRowEdit" prefHeight="30.0" prefWidth="30.0"
-                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="160.0"/>
+                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="200.0"/>
         <Button fx:id="removeButton" layoutX="300.0" layoutY="206.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0"
                 minWidth="30.0" mnemonicParsing="false" onAction="#onRowRemove" prefHeight="30.0" prefWidth="30.0"
-                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="200.0"/>
+                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="240.0"/>
 
-        <ImageView fx:id="imgPlace" fitHeight="230.0" fitWidth="230.0" layoutX="355.0" layoutY="120.0"
-                   pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="imgPlace" fitHeight="250.0" fitWidth="250.0" layoutX="390.0" layoutY="125.0"
+                   pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="125.0"/>
 
         <Button layoutX="16.0" layoutY="353.0" mnemonicParsing="false" onAction="#onSave" text="Сохранить"
                 AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"/>

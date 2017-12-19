@@ -138,6 +138,7 @@ public class MainController extends AbstractController {
             dicWindow.getController().setDTO(new DictionaryValueDTO(dictionaryService.getDictionary((DictionaryType) currentItem.getNodeType())));
             dicWindow.startWindow(new Stage());
         } else if (currentItem.getNodeType() instanceof ProductType && !prodWindow.isShown()) {
+            prodWindow.getController().setDTO(new ProductDTO(currentItem.getNodeType()));
             prodWindow.startWindow(new Stage());
         } else {
             setRandomFaceAndText();
@@ -164,6 +165,7 @@ public class MainController extends AbstractController {
             dicWindow.getController().setDTO((DictionaryValueDTO) currentItem);
             dicWindow.startWindow(new Stage());
         } else if (currentItem instanceof ProductDTO && !prodWindow.isShown()) {
+            prodWindow.getController().setDTO((ProductDTO) currentItem);
             prodWindow.startWindow(new Stage());
         }
     }
