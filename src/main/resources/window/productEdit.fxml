@@ -31,9 +31,9 @@
         <Label layoutX="10.0" layoutY="123.0" text="Цена" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="130.0"/>
         <Label layoutX="216.0" layoutY="120.0" text="Вес" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="130.0"/>
         <TextField fx:id="priceBox" layoutX="46.0" layoutY="116.0" AnchorPane.leftAnchor="45.0"
-                   AnchorPane.topAnchor="125.0"/>
+                   AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="125.0"/>
         <TextField fx:id="weightBox" layoutX="230.0" layoutY="125.0" AnchorPane.leftAnchor="230.0"
-                   AnchorPane.topAnchor="125.0"/>
+                   AnchorPane.rightAnchor="265.0" AnchorPane.topAnchor="125.0"/>
 
         <TreeTableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true"
                        AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="310.0"

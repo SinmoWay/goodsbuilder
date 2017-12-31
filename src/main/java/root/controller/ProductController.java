@@ -1,18 +1,20 @@
 package root.controller;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
-import root.db.dto.AbstractDTO;
+import root.db.dto.ContentDTO;
 import root.db.dto.ProductDTO;
 import root.db.type.ImgResource;
 import root.ui.builder.ImgResourceBuilder;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.util.stream.Collectors;
 
 public class ProductController extends AbstractController {
 
@@ -31,7 +33,7 @@ public class ProductController extends AbstractController {
     @FXML
     private TextField weightBox;
     @FXML
-    private TreeTableView<AbstractDTO> table;
+    private TreeTableView<ContentDTO> table;
     @FXML
     private Button addButton;
     @FXML
@@ -59,13 +61,39 @@ public class ProductController extends AbstractController {
             priceBox.textProperty().addListener(onNumberInputChange(priceBox));
             weightBox.textProperty().addListener(onNumberInputChange(weightBox));
 
-            TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Состав", null));
+            TreeTableColumn<ContentDTO, String> contentNameColumn = new TreeTableColumn<>("Название продукта");
+            contentNameColumn.setCellValueFactory(
+                    p -> new ReadOnlyStringWrapper(p.getValue().getValue().getName())
+            );
+            TreeTableColumn<ContentDTO, String> amountColumn = new TreeTableColumn<>("Количество");
+            amountColumn.setCellValueFactory(p -> {
+                Integer amount = p.getValue().getValue().getAmount();
+                return new ReadOnlyStringWrapper(amount == null ? "" : String.valueOf(amount));
+            });
+            table.getColumns().addAll(contentNameColumn, amountColumn);
+
+            TreeItem<ContentDTO> root = new TreeItem<>(new ContentDTO("Состав"));
+            root.getChildren().clear();
 
             if (dto.getId() != null) {
                 descriptionBox.setText(dto.getDescription());
                 imgNameBox.setText(dto.getImage_name());
                 priceBox.setText(String.valueOf(dto.getPrice()));
                 weightBox.setText(String.valueOf(dto.getWeight()));
+
+                root.getChildren().addAll(
+                        dto.getFabricators().stream()
+                                .map(fabricator -> {
+                                    TreeItem<ContentDTO> currFabr = new TreeItem<>(new ContentDTO(fabricator.getNodeText()));
+                                    currFabr.getChildren().addAll(
+                                            fabricator.getContents().stream()
+                                                    .map(TreeItem::new)
+                                                    .collect(Collectors.toList())
+                                    );
+                                    return currFabr;
+                                })
+                                .collect(Collectors.toList())
+                );
             }
 
             table.setRoot(root);
