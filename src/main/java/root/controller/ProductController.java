@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 import root.db.dto.ContentDTO;
 import root.db.dto.ProductDTO;
+import root.db.type.DictionaryType;
 import root.db.type.ImgResource;
 import root.ui.builder.ImgResourceBuilder;
 
@@ -31,6 +32,8 @@ public class ProductController extends AbstractController {
     @FXML
     private TextField priceBox;
     @FXML
+    private ImageView rubImgView;
+    @FXML
     private TextField weightBox;
     @FXML
     private TreeTableView<ContentDTO> table;
@@ -41,6 +44,8 @@ public class ProductController extends AbstractController {
     @FXML
     private Button removeButton;
 
+    private ContentDTO currentItem = null;
+
     @Override
     @PostConstruct
     public void init() {
@@ -48,6 +53,7 @@ public class ProductController extends AbstractController {
         editButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.EDIT, 25));
         removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
         ImgResourceBuilder.initView(imgPlace, ImgResource.EYE);
+        ImgResourceBuilder.initView(rubImgView, ImgResource.RUB, 20);
     }
 
     @Override
@@ -72,7 +78,7 @@ public class ProductController extends AbstractController {
             });
             table.getColumns().addAll(contentNameColumn, amountColumn);
 
-            TreeItem<ContentDTO> root = new TreeItem<>(new ContentDTO("Состав"));
+            TreeItem<ContentDTO> root = new TreeItem<>(new ContentDTO("Состав", null, null));
             root.getChildren().clear();
 
             if (dto.getId() != null) {
@@ -84,13 +90,14 @@ public class ProductController extends AbstractController {
                 root.getChildren().addAll(
                         dto.getFabricators().stream()
                                 .map(fabricator -> {
-                                    TreeItem<ContentDTO> currFabr = new TreeItem<>(new ContentDTO(fabricator.getNodeText()));
-                                    currFabr.getChildren().addAll(
+                                    TreeItem<ContentDTO> currFabricator = new TreeItem<>(new ContentDTO(fabricator.getNodeText(), null, DictionaryType.FABRICATOR_NAME));
+                                    currFabricator.getChildren().addAll(
                                             fabricator.getContents().stream()
+                                                    .map(content -> new ContentDTO(content.getName(), content.getAmount(), DictionaryType.CONTENT_NAME))
                                                     .map(TreeItem::new)
                                                     .collect(Collectors.toList())
                                     );
-                                    return currFabr;
+                                    return currFabricator;
                                 })
                                 .collect(Collectors.toList())
                 );
@@ -132,6 +139,21 @@ public class ProductController extends AbstractController {
                 field.setText(oldValue);
             }
         };
+    }
+
+    @FXML
+    public void onSelect() {
+        TreeItem<ContentDTO> item = table.getFocusModel().getFocusedItem();
+        currentItem = item == null ? null : item.getValue();
+        if (currentItem == null) {
+            addButton.setDisable(true);
+            editButton.setDisable(true);
+            removeButton.setDisable(true);
+        } else {
+            addButton.setDisable(false);
+            editButton.setDisable(false);
+            removeButton.setDisable(false);
+        }
     }
 
     @FXML

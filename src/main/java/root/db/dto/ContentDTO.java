@@ -1,16 +1,17 @@
 package root.db.dto;
 
 import root.db.entity.ContentEntity;
+import root.db.type.NodeType;
 
 public class ContentDTO extends AbstractDTO {
 
     private String name;
     private Integer amount;
 
-    public ContentDTO(String nullContentText) {
-        super(nullContentText, null);
-        name = nullContentText;
-        amount = null;
+    public ContentDTO(String name, Integer amount, NodeType nodeType) {
+        super(name, nodeType);
+        this.name = name;
+        this.amount = amount;
     }
 
     public ContentDTO(ContentEntity entity) {

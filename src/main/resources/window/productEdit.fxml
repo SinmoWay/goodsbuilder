@@ -29,31 +29,35 @@
                 AnchorPane.leftAnchor="355.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="85.0"/>
 
         <Label layoutX="10.0" layoutY="123.0" text="Цена" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="130.0"/>
-        <Label layoutX="216.0" layoutY="120.0" text="Вес" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="130.0"/>
         <TextField fx:id="priceBox" layoutX="46.0" layoutY="116.0" AnchorPane.leftAnchor="45.0"
                    AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="125.0"/>
-        <TextField fx:id="weightBox" layoutX="230.0" layoutY="125.0" AnchorPane.leftAnchor="230.0"
-                   AnchorPane.rightAnchor="265.0" AnchorPane.topAnchor="125.0"/>
+        <ImageView fx:id="rubImgView" fitHeight="20.0" fitWidth="20.0" layoutX="200.0" layoutY="131.0"
+                   pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="202.0" AnchorPane.topAnchor="127.0"/>
 
-        <TreeTableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true"
-                       AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="310.0"
-                       AnchorPane.topAnchor="160.0">
+        <Label layoutX="216.0" layoutY="120.0" text="Вес" AnchorPane.leftAnchor="235.0" AnchorPane.topAnchor="130.0"/>
+        <TextField fx:id="weightBox" layoutX="230.0" layoutY="125.0" AnchorPane.leftAnchor="260.0"
+                   AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="125.0"/>
+
+        <TreeTableView fx:id="table" onMouseClicked="#onSelect" prefHeight="200.0" prefWidth="200.0"
+                       tableMenuButtonVisible="true" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0"
+                       AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="160.0">
             <columnResizePolicy>
                 <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TreeTableView>
-        <Button fx:id="addButton" layoutX="300.0" layoutY="130.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0"
-                minWidth="30.0" mnemonicParsing="false" onAction="#onRowAdd" prefHeight="30.0" prefWidth="30.0"
-                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="160.0"/>
-        <Button fx:id="editButton" layoutX="297.0" layoutY="154.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0"
-                minWidth="30.0" mnemonicParsing="false" onAction="#onRowEdit" prefHeight="30.0" prefWidth="30.0"
-                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="200.0"/>
-        <Button fx:id="removeButton" layoutX="300.0" layoutY="206.0" maxHeight="30.0" maxWidth="30.0" minHeight="30.0"
-                minWidth="30.0" mnemonicParsing="false" onAction="#onRowRemove" prefHeight="30.0" prefWidth="30.0"
-                AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="240.0"/>
 
-        <ImageView fx:id="imgPlace" fitHeight="250.0" fitWidth="250.0" layoutX="390.0" layoutY="125.0"
-                   pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="125.0"/>
+        <Button fx:id="addButton" disable="true" layoutX="300.0" layoutY="130.0" maxHeight="30.0" maxWidth="30.0"
+                minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onRowAdd" prefHeight="30.0"
+                prefWidth="30.0" AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="160.0"/>
+        <Button fx:id="editButton" disable="true" layoutX="297.0" layoutY="154.0" maxHeight="30.0" maxWidth="30.0"
+                minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onRowEdit" prefHeight="30.0"
+                prefWidth="30.0" AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="200.0"/>
+        <Button fx:id="removeButton" disable="true" layoutX="300.0" layoutY="206.0" maxHeight="30.0" maxWidth="30.0"
+                minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onRowRemove" prefHeight="30.0"
+                prefWidth="30.0" AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="240.0"/>
+
+        <ImageView fx:id="imgPlace" fitHeight="250.0" fitWidth="250.0" layoutX="385.0" layoutY="155.0"
+                   pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="160.0"/>
 
         <Button layoutX="16.0" layoutY="353.0" mnemonicParsing="false" onAction="#onSave" text="Сохранить"
                 AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"/>
