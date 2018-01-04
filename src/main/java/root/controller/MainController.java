@@ -37,6 +37,10 @@ public class MainController extends AbstractController {
     private DictionaryService dictionaryService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ImgResourceBuilder imgResourceBuilder;
+    @Autowired
+    private AlertBuilder alertBuilder;
 
     //MENU
     @FXML
@@ -74,15 +78,15 @@ public class MainController extends AbstractController {
     public void init() {
         this.onMenuHide();
 
-        unloadButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.UNLOAD, 25));
-        uploadButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.UPLOAD, 25));
+        unloadButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.UNLOAD, 25));
+        uploadButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.UPLOAD, 25));
 
-        refreshButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REFRESH, 25));
-        addButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.ADD, 25));
-        editButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.EDIT, 25));
-        removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
+        refreshButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.REFRESH, 25));
+        addButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.ADD, 25));
+        editButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.EDIT, 25));
+        removeButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
 
-        ImgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
+        imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
         infoText.setText("Успешно загружено");
     }
 
@@ -111,12 +115,12 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onMenuHide() {
-        menu.setGraphic(ImgResourceBuilder.getSqView(ImgResource.MENU_OPEN, 10));
+        menu.setGraphic(imgResourceBuilder.getSqView(ImgResource.MENU_OPEN, 10));
     }
 
     @FXML
     public void onMenuShown() {
-        menu.setGraphic(ImgResourceBuilder.getSqView(ImgResource.MENU_CLOSE, 10));
+        menu.setGraphic(imgResourceBuilder.getSqView(ImgResource.MENU_CLOSE, 10));
     }
 
     @FXML
@@ -181,7 +185,7 @@ public class MainController extends AbstractController {
             return;
         }
         if (currentItem.getId() != null) {
-            ButtonType answer = AlertBuilder.alertConfirm(
+            ButtonType answer = alertBuilder.alertConfirm(
                     "Удалить",
                     "Запись: \"" + currentItem.getNodeText() + "\" будет удалена",
                     "Уверены, что хотите удалить эту запись?"
@@ -240,12 +244,12 @@ public class MainController extends AbstractController {
             default:
                 phrase = "Бессмысленное действие";
         }
-        ImgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
+        imgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
         infoText.setText(phrase);
     }
 
     private void setChoseSmtAdvice() {
-        ImgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
+        imgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
         infoText.setText("Нужно хоть что-нибудь выбрать");
     }
 

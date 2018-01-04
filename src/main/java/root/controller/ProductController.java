@@ -39,6 +39,15 @@ public class ProductController extends AbstractController {
 
     private ProductDTO dto = null;
 
+    @Autowired
+    private DictionaryService dictionaryService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ImgResourceBuilder imgResourceBuilder;
+    @Autowired
+    private AlertBuilder alertBuilder;
+
     @FXML
     private ImageView imgPlace;
     @FXML
@@ -60,21 +69,16 @@ public class ProductController extends AbstractController {
     @FXML
     private Button removeButton;
 
-    @Autowired
-    private DictionaryService dictionaryService;
-    @Autowired
-    private ProductService productService;
-
     private TreeItem<ContentDTO> currentItem = null;
 
     @Override
     @PostConstruct
     public void init() {
-        addButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.ADD, 25));
-        editButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.EDIT, 25));
-        removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
-        ImgResourceBuilder.initView(imgPlace, ImgResource.EYE);
-        ImgResourceBuilder.initView(rubImgView, ImgResource.RUB, 20);
+        addButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.ADD, 25));
+        editButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.EDIT, 25));
+        removeButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
+        imgResourceBuilder.initView(imgPlace, ImgResource.EYE);
+        imgResourceBuilder.initView(rubImgView, ImgResource.RUB, 20);
 
         priceBox.textProperty().addListener(onNumberInputChange(priceBox, true));
         weightBox.textProperty().addListener(onNumberInputChange(weightBox, true));
@@ -137,6 +141,8 @@ public class ProductController extends AbstractController {
                                 })
                                 .collect(Collectors.toList())
                 );
+
+                onImgShow();
             } else {
                 descriptionBox.setText("");
                 imgNameBox.setText("");
@@ -162,9 +168,9 @@ public class ProductController extends AbstractController {
     public void onImgShow() {
         try {
             String imgUri = new File(IMG_CATALOG + imgNameBox.getText().trim()).toURI().toString();
-            ImgResourceBuilder.initView(imgPlace, imgUri);
+            imgResourceBuilder.initView(imgPlace, imgUri);
         } catch (Exception ex) {
-            AlertBuilder.showError("Отобразить изображение невозможно!",
+            alertBuilder.showError("Отобразить изображение невозможно!",
                     "Проверьте расположение и указанное имя файла. Не забудьте указать расширение."
             );
         }
@@ -209,12 +215,12 @@ public class ProductController extends AbstractController {
         if (isNotRoot()) {
             ButtonType answer;
             if (currentItem.getValue().getNodeType() == DictionaryType.CONTENT_NAME) {
-                answer = AlertBuilder.alertConfirm("Удалить",
+                answer = alertBuilder.alertConfirm("Удалить",
                         "Запись: \"" + currentItem.getValue().getName() + "\" будет удалена",
                         "Уверены, что хотите удалить эту запись?"
                 );
             } else {
-                answer = AlertBuilder.alertConfirm("Удалить",
+                answer = alertBuilder.alertConfirm("Удалить",
                         "Запись: \"" + currentItem.getValue().getName() + "\" и все ее потомки будут удалены",
                         "Уверены, что хотите удалить эту запись и всех ее потомков?"
                 );
@@ -228,7 +234,7 @@ public class ProductController extends AbstractController {
 
     @FXML
     public void onSave() {
-        ButtonType answer = AlertBuilder.alertConfirm("Сохранение", "Сохранение данного товара", "Сохранить текущий товар?");
+        ButtonType answer = alertBuilder.alertConfirm("Сохранение", "Сохранение данного товара", "Сохранить текущий товар?");
         if (answer != ButtonType.OK) {
             return;
         }
@@ -297,7 +303,7 @@ public class ProductController extends AbstractController {
         text += isContent ? " состава" : " производителя" + "\nЗаполните все поля";
         dialog.setHeaderText(text);
 
-        dialog.setGraphic(ImgResourceBuilder.getSqView(ImgResource.TUX, 50));
+        dialog.setGraphic(imgResourceBuilder.getSqView(ImgResource.TUX, 50));
 
         ButtonType saveButtonType = new ButtonType("Сохранить", ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Отменить", ButtonData.CANCEL_CLOSE);
@@ -315,7 +321,7 @@ public class ProductController extends AbstractController {
                 .getAllValuesByDictionaryType(isContent ? DictionaryType.CONTENT_NAME : DictionaryType.FABRICATOR_NAME);
 
         if (dictionaryValues == null || dictionaryValues.isEmpty()) {
-            AlertBuilder.showError("Словари не заполнены!", "Заполните словари и возвращайтесь");
+            alertBuilder.showError("Словари не заполнены!", "Заполните словари и возвращайтесь");
             return null;
         }
 

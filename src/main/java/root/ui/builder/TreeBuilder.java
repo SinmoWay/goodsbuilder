@@ -2,14 +2,14 @@ package root.ui.builder;
 
 import javafx.scene.control.TreeItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import root.db.dto.AbstractDTO;
 import root.db.service.DictionaryService;
 import root.db.service.ProductService;
 import root.db.type.DictionaryType;
 import root.db.type.ProductType;
 
-@Service
+@Component
 public final class TreeBuilder {
 
     @Autowired

@@ -2,12 +2,14 @@ package root.ui.builder;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class AlertBuilder {
 
-    public static ButtonType alertConfirm(String title, String header, String text) {
+    public ButtonType alertConfirm(String title, String header, String text) {
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
 
         confirmationDialog.setTitle(title);
@@ -18,7 +20,7 @@ public class AlertBuilder {
         return result.orElse(ButtonType.CANCEL);
     }
 
-    public static void showError(String header, String content) {
+    public void showError(String header, String content) {
         Alert error = new Alert(Alert.AlertType.ERROR);
 
         error.setTitle("Ошибка");
