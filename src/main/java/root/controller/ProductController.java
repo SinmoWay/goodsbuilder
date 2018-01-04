@@ -75,6 +75,23 @@ public class ProductController extends AbstractController {
         removeButton.setGraphic(ImgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
         ImgResourceBuilder.initView(imgPlace, ImgResource.EYE);
         ImgResourceBuilder.initView(rubImgView, ImgResource.RUB, 20);
+
+        priceBox.textProperty().addListener(onNumberInputChange(priceBox, true));
+        weightBox.textProperty().addListener(onNumberInputChange(weightBox, true));
+
+        TreeTableColumn<ContentDTO, String> contentNameColumn = new TreeTableColumn<>("Название продукта");
+        contentNameColumn.setCellValueFactory(
+                p -> new ReadOnlyStringWrapper(p.getValue().getValue().getName())
+        );
+        TreeTableColumn<ContentDTO, String> amountColumn = new TreeTableColumn<>("Количество");
+        amountColumn.setCellValueFactory(p -> {
+            Integer amount = p.getValue().getValue().getAmount();
+            return new ReadOnlyStringWrapper(amount == null ? "" : String.valueOf(amount));
+        });
+        table.getColumns().addAll(contentNameColumn, amountColumn);
+
+        table.setRoot(new TreeItem<>(new ContentDTO(null, "Состав", null, null)));
+
     }
 
     @Override
@@ -85,21 +102,7 @@ public class ProductController extends AbstractController {
                 return;
             }
 
-            priceBox.textProperty().addListener(onNumberInputChange(priceBox, true));
-            weightBox.textProperty().addListener(onNumberInputChange(weightBox, true));
-
-            TreeTableColumn<ContentDTO, String> contentNameColumn = new TreeTableColumn<>("Название продукта");
-            contentNameColumn.setCellValueFactory(
-                    p -> new ReadOnlyStringWrapper(p.getValue().getValue().getName())
-            );
-            TreeTableColumn<ContentDTO, String> amountColumn = new TreeTableColumn<>("Количество");
-            amountColumn.setCellValueFactory(p -> {
-                Integer amount = p.getValue().getValue().getAmount();
-                return new ReadOnlyStringWrapper(amount == null ? "" : String.valueOf(amount));
-            });
-            table.getColumns().addAll(contentNameColumn, amountColumn);
-
-            TreeItem<ContentDTO> root = new TreeItem<>(new ContentDTO(null, "Состав", null, null));
+            TreeItem<ContentDTO> root = table.getRoot();
             root.getChildren().clear();
 
             if (dto.getId() != null) {
@@ -134,6 +137,11 @@ public class ProductController extends AbstractController {
                                 })
                                 .collect(Collectors.toList())
                 );
+            } else {
+                descriptionBox.setText("");
+                imgNameBox.setText("");
+                priceBox.setText("");
+                weightBox.setText("");
             }
 
             table.setRoot(root);
@@ -144,8 +152,6 @@ public class ProductController extends AbstractController {
     public EventHandler<WindowEvent> onEnd() {
         return event -> {
             dto = null;
-            table.getColumns().clear();
-            table.setRoot(null);
             if (onEndEvent != null) {
                 onEndEvent.handle(event);
             }

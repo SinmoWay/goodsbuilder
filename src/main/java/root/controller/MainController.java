@@ -7,9 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import root.db.dto.AbstractDTO;
-import root.db.dto.DictionaryValueDTO;
-import root.db.dto.ProductDTO;
+import root.db.dto.*;
 import root.db.service.DictionaryService;
 import root.db.service.ProductService;
 import root.db.type.DictionaryType;
@@ -68,6 +66,7 @@ public class MainController extends AbstractController {
     @FXML
     private ImageView statusImg;
 
+    private TreeItem<AbstractDTO> currentTreeItem = null;
     private AbstractDTO currentItem = null;
 
     @Override
@@ -132,6 +131,7 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onAdd() {
+        normalizeCurrentItem();
         if (currentItem == null) {
             setChoseSmtAdvice();
             return;
@@ -159,6 +159,7 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onEdit() throws IOException {
+        normalizeCurrentItem();
         if (currentItem == null) {
             setChoseSmtAdvice();
             return;
@@ -174,12 +175,12 @@ public class MainController extends AbstractController {
 
     @FXML
     public void onRemove() {
+        normalizeCurrentItem();
         if (currentItem == null) {
             setChoseSmtAdvice();
             return;
         }
         if (currentItem.getId() != null) {
-
             ButtonType answer = AlertBuilder.alertConfirm(
                     "Удалить",
                     "Запись: \"" + currentItem.getNodeText() + "\" будет удалена",
@@ -204,8 +205,8 @@ public class MainController extends AbstractController {
             addButton.setDisable(false);
         }
 
-        TreeItem<AbstractDTO> item = mainTree.getFocusModel().getFocusedItem();
-        currentItem = item == null ? null : item.getValue();
+        currentTreeItem = mainTree.getFocusModel().getFocusedItem();
+        currentItem = getDtoFromItem(currentTreeItem);
         if (currentItem == null || currentItem.getId() == null) {
             editButton.setDisable(true);
             removeButton.setDisable(true);
@@ -246,6 +247,21 @@ public class MainController extends AbstractController {
     private void setChoseSmtAdvice() {
         ImgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
         infoText.setText("Нужно хоть что-нибудь выбрать");
+    }
+
+    private AbstractDTO getDtoFromItem(TreeItem<AbstractDTO> item) {
+        return item == null ? null : item.getValue();
+    }
+
+    private void normalizeCurrentItem() {
+        if (currentItem instanceof ContentDTO) {
+            currentTreeItem = currentTreeItem.getParent();
+            currentItem = getDtoFromItem(currentTreeItem);
+        }
+        if (currentItem instanceof FabricatorDTO) {
+            currentTreeItem = currentTreeItem.getParent();
+            currentItem = getDtoFromItem(currentTreeItem);
+        }
     }
 
 }
