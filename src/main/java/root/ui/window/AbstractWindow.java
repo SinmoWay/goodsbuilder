@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import root.controller.AbstractController;
 import root.db.type.ImgResource;
+import root.ui.builder.AlertBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,16 +47,13 @@ public abstract class AbstractWindow<T extends AbstractController> {
         return shown;
     }
 
-    public void startWindow(Stage newStage) {
-        if (this.stage == null) {
-            this.stage = newStage;
-        }
-        if (this.scene == null) {
-            this.scene = new Scene(view);
-        }
-        this.stage.setTitle(title);
+    public void init(Stage stage) {
+        this.stage = stage;
+
+        this.scene = new Scene(view);
         this.stage.setScene(scene);
 
+        this.stage.setTitle(title);
         this.stage.getIcons().add(new Image(ImgResource.TUX.path()));
 
         this.stage.addEventHandler(WindowEvent.WINDOW_SHOWING, controller.onStart());
@@ -63,6 +61,17 @@ public abstract class AbstractWindow<T extends AbstractController> {
 
         this.stage.centerOnScreen();
         this.stage.setResizable(resizable);
+    }
+
+
+    public void startWindow() {
+        if (this.stage == null) {
+            AlertBuilder.showError(
+                    "Ужасная ошибка разработчика",
+                    "Сообщите об этом разработчику, описав условия появления"
+            );
+            return;
+        }
 
         this.shown = true;
         this.stage.show();

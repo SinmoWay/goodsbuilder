@@ -2,6 +2,12 @@ package root.db.entity;
 
 import javax.persistence.*;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "DictionaryValueEntity.getByDictionaryAndValue",
+                query = "SELECT dv FROM DictionaryValueEntity dv WHERE dv.dictionary.name = :dic AND dv.value LIKE :val"
+        )
+})
 @Entity
 @Table(name = "DICTIONARY_VALUE")
 public class DictionaryValueEntity {

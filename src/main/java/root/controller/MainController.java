@@ -15,6 +15,7 @@ import root.db.service.ProductService;
 import root.db.type.DictionaryType;
 import root.db.type.ImgResource;
 import root.db.type.ProductType;
+import root.ui.builder.AlertBuilder;
 import root.ui.builder.ImgResourceBuilder;
 import root.ui.builder.TreeBuilder;
 import root.ui.window.DictionaryEditWindow;
@@ -22,7 +23,6 @@ import root.ui.window.ProductEditWindow;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Random;
 
 public class MainController extends AbstractController {
@@ -90,6 +90,8 @@ public class MainController extends AbstractController {
     @Override
     public EventHandler<WindowEvent> onStart() {
         return event -> {
+            dicWindow.init(new Stage());
+            prodWindow.init(new Stage());
             dicWindow.getController().setOnEndEvent(endEvent -> onRefresh());
             prodWindow.getController().setOnEndEvent(endEvent -> onRefresh());
             onRefresh();
@@ -136,10 +138,10 @@ public class MainController extends AbstractController {
         }
         if (currentItem.getNodeType() instanceof DictionaryType && !dicWindow.isShown()) {
             dicWindow.getController().setDTO(new DictionaryValueDTO(dictionaryService.getDictionary((DictionaryType) currentItem.getNodeType())));
-            dicWindow.startWindow(new Stage());
+            dicWindow.startWindow();
         } else if (currentItem.getNodeType() instanceof ProductType && !prodWindow.isShown()) {
             prodWindow.getController().setDTO(new ProductDTO(currentItem.getNodeType()));
-            prodWindow.startWindow(new Stage());
+            prodWindow.startWindow();
         } else {
             setRandomFaceAndText();
         }
@@ -163,10 +165,10 @@ public class MainController extends AbstractController {
         }
         if (currentItem instanceof DictionaryValueDTO && !dicWindow.isShown()) {
             dicWindow.getController().setDTO((DictionaryValueDTO) currentItem);
-            dicWindow.startWindow(new Stage());
+            dicWindow.startWindow();
         } else if (currentItem instanceof ProductDTO && !prodWindow.isShown()) {
             prodWindow.getController().setDTO((ProductDTO) currentItem);
-            prodWindow.startWindow(new Stage());
+            prodWindow.startWindow();
         }
     }
 
@@ -177,17 +179,17 @@ public class MainController extends AbstractController {
             return;
         }
         if (currentItem.getId() != null) {
-            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
 
-            confirmationDialog.setTitle("Удалить");
-            confirmationDialog.setHeaderText("Запись: \"" + currentItem.getNodeText() + "\" будет удалена");
-            confirmationDialog.setContentText("Уверены, что хотите удалить эту запись?");
+            ButtonType answer = AlertBuilder.alertConfirm(
+                    "Удалить",
+                    "Запись: \"" + currentItem.getNodeText() + "\" будет удалена",
+                    "Уверены, что хотите удалить эту запись?"
+            );
 
-            Optional<ButtonType> result = confirmationDialog.showAndWait();
-            if (result.get() == ButtonType.OK && currentItem instanceof DictionaryValueDTO) {
+            if (answer == ButtonType.OK && currentItem instanceof DictionaryValueDTO) {
                 dictionaryService.delete(currentItem.getId());
                 onRefresh();
-            } else if (result.get() == ButtonType.OK && currentItem instanceof ProductDTO) {
+            } else if (answer == ButtonType.OK && currentItem instanceof ProductDTO) {
                 productService.delete(currentItem.getId());
                 onRefresh();
             }

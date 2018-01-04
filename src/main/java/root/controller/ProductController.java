@@ -15,14 +15,19 @@ import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.db.dto.ContentDTO;
 import root.db.dto.DictionaryValueDTO;
+import root.db.dto.FabricatorDTO;
 import root.db.dto.ProductDTO;
 import root.db.service.DictionaryService;
+import root.db.service.ProductService;
 import root.db.type.DictionaryType;
 import root.db.type.ImgResource;
+import root.ui.builder.AlertBuilder;
 import root.ui.builder.ImgResourceBuilder;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -57,6 +62,8 @@ public class ProductController extends AbstractController {
 
     @Autowired
     private DictionaryService dictionaryService;
+    @Autowired
+    private ProductService productService;
 
     private TreeItem<ContentDTO> currentItem = null;
 
@@ -73,7 +80,7 @@ public class ProductController extends AbstractController {
     @Override
     public EventHandler<WindowEvent> onStart() {
         return event -> {
-            if (dto == null) {
+            if (dto == null || dto.getNodeType() == null) {
                 window.closeWindow();
                 return;
             }
@@ -92,7 +99,7 @@ public class ProductController extends AbstractController {
             });
             table.getColumns().addAll(contentNameColumn, amountColumn);
 
-            TreeItem<ContentDTO> root = new TreeItem<>(new ContentDTO("Состав", null, null));
+            TreeItem<ContentDTO> root = new TreeItem<>(new ContentDTO(null, "Состав", null, null));
             root.getChildren().clear();
 
             if (dto.getId() != null) {
@@ -104,10 +111,22 @@ public class ProductController extends AbstractController {
                 root.getChildren().addAll(
                         dto.getFabricators().stream()
                                 .map(fabricator -> {
-                                    TreeItem<ContentDTO> currFabricator = new TreeItem<>(new ContentDTO(fabricator.getNodeText(), null, DictionaryType.FABRICATOR_NAME));
+                                    TreeItem<ContentDTO> currFabricator = new TreeItem<>(
+                                            new ContentDTO(
+                                                    fabricator.getId(),
+                                                    fabricator.getNodeText(),
+                                                    null,
+                                                    DictionaryType.FABRICATOR_NAME
+                                            )
+                                    );
                                     currFabricator.getChildren().addAll(
                                             fabricator.getContents().stream()
-                                                    .map(content -> new ContentDTO(content.getName(), content.getAmount(), DictionaryType.CONTENT_NAME))
+                                                    .map(content -> new ContentDTO(
+                                                            content.getId(),
+                                                            content.getName(),
+                                                            content.getAmount(),
+                                                            DictionaryType.CONTENT_NAME)
+                                                    )
                                                     .map(TreeItem::new)
                                                     .collect(Collectors.toList())
                                     );
@@ -125,6 +144,8 @@ public class ProductController extends AbstractController {
     public EventHandler<WindowEvent> onEnd() {
         return event -> {
             dto = null;
+            table.getColumns().clear();
+            table.setRoot(null);
             if (onEndEvent != null) {
                 onEndEvent.handle(event);
             }
@@ -137,22 +158,10 @@ public class ProductController extends AbstractController {
             String imgUri = new File(IMG_CATALOG + imgNameBox.getText().trim()).toURI().toString();
             ImgResourceBuilder.initView(imgPlace, imgUri);
         } catch (Exception ex) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-
-            error.setTitle("Ошибка");
-            error.setHeaderText("Отобразить изображение невозможно!");
-            error.setContentText("Проверьте расположение и указанное имя файла. Не забудьте указать расширение.");
-
-            error.showAndWait();
+            AlertBuilder.showError("Отобразить изображение невозможно!",
+                    "Проверьте расположение и указанное имя файла. Не забудьте указать расширение."
+            );
         }
-    }
-
-    private ChangeListener<String> onNumberInputChange(TextField field, boolean isDouble) {
-        return (observable, oldValue, newValue) -> {
-            if (!newValue.matches(isDouble ? REG_DOUBLE : REG_INT)) {
-                field.setText(oldValue);
-            }
-        };
     }
 
     @FXML
@@ -174,6 +183,7 @@ public class ProductController extends AbstractController {
         ContentDTO newOne = createEditDialog(false, isNotRoot());
         if (newOne != null) {
             getParent().getChildren().add(new TreeItem<>(newOne));
+            table.refresh();
         }
     }
 
@@ -183,18 +193,62 @@ public class ProductController extends AbstractController {
             ContentDTO newOne = createEditDialog(true, currentItem.getValue().getNodeType() == DictionaryType.CONTENT_NAME);
             if (newOne != null) {
                 currentItem.setValue(newOne);
+                table.refresh();
             }
         }
     }
 
     @FXML
     public void onRowRemove() {
-
+        if (isNotRoot()) {
+            ButtonType answer;
+            if (currentItem.getValue().getNodeType() == DictionaryType.CONTENT_NAME) {
+                answer = AlertBuilder.alertConfirm("Удалить",
+                        "Запись: \"" + currentItem.getValue().getName() + "\" будет удалена",
+                        "Уверены, что хотите удалить эту запись?"
+                );
+            } else {
+                answer = AlertBuilder.alertConfirm("Удалить",
+                        "Запись: \"" + currentItem.getValue().getName() + "\" и все ее потомки будут удалены",
+                        "Уверены, что хотите удалить эту запись и всех ее потомков?"
+                );
+            }
+            if (answer == ButtonType.OK) {
+                currentItem.getParent().getChildren().remove(currentItem);
+                table.refresh();
+            }
+        }
     }
 
     @FXML
     public void onSave() {
+        ButtonType answer = AlertBuilder.alertConfirm("Сохранение", "Сохранение данного товара", "Сохранить текущий товар?");
+        if (answer != ButtonType.OK) {
+            return;
+        }
+        List<FabricatorDTO> fabricators = new ArrayList<>();
+        for (TreeItem<ContentDTO> node : table.getRoot().getChildren()) {
+            List<ContentDTO> content = node.getChildren().stream()
+                    .map(TreeItem::getValue)
+                    .collect(Collectors.toList());
+            ContentDTO curr = node.getValue();
+            fabricators.add(new FabricatorDTO(curr.getId(), curr.getName(), content));
+        }
+        dto.getFabricators().clear();
+        dto.getFabricators().addAll(fabricators);
 
+        String desc = descriptionBox.getText();
+        String img = imgNameBox.getText();
+        String price = priceBox.getText();
+        String weight = weightBox.getText();
+
+        dto.setDescription(desc != null && !desc.isEmpty() ? desc.trim().toLowerCase() : "");
+        dto.setImage_name(img != null && !img.isEmpty() ? img.trim() : "");
+        dto.setPrice(price != null && !price.isEmpty() ? Double.valueOf(price.trim()) : null);
+        dto.setWeight(weight != null && !weight.isEmpty() ? Double.valueOf(weight.trim()) : null);
+
+        productService.saveOrUpdate(dto);
+        onCancel();
     }
 
     @FXML
@@ -204,6 +258,14 @@ public class ProductController extends AbstractController {
 
     public void setDTO(ProductDTO dto) {
         this.dto = dto;
+    }
+
+    private ChangeListener<String> onNumberInputChange(TextField field, boolean isDouble) {
+        return (observable, oldValue, newValue) -> {
+            if (!newValue.matches(isDouble ? REG_DOUBLE : REG_INT)) {
+                field.setText(oldValue);
+            }
+        };
     }
 
     private TreeItem<ContentDTO> getParent() {
@@ -243,10 +305,16 @@ public class ProductController extends AbstractController {
         ComboBox<String> name = new ComboBox<>();
         TextField amount = new TextField();
 
+        List<DictionaryValueDTO> dictionaryValues = dictionaryService
+                .getAllValuesByDictionaryType(isContent ? DictionaryType.CONTENT_NAME : DictionaryType.FABRICATOR_NAME);
+
+        if (dictionaryValues == null || dictionaryValues.isEmpty()) {
+            AlertBuilder.showError("Словари не заполнены!", "Заполните словари и возвращайтесь");
+            return null;
+        }
+
         name.setItems(new ObservableListWrapper<>(
-                dictionaryService
-                        .getAllValuesByDictionaryType(isContent ? DictionaryType.CONTENT_NAME : DictionaryType.FABRICATOR_NAME)
-                        .stream()
+                dictionaryValues.stream()
                         .map(DictionaryValueDTO::getNodeText)
                         .collect(Collectors.toList())
         ));
@@ -259,8 +327,10 @@ public class ProductController extends AbstractController {
         }
         grid.add(new Label("Название:"), 0, 0);
         grid.add(name, 1, 0);
-        grid.add(new Label("Количество:"), 0, 1);
-        grid.add(amount, 1, 1);
+        if (isContent) {
+            grid.add(new Label("Количество:"), 0, 1);
+            grid.add(amount, 1, 1);
+        }
 
         amount.textProperty().addListener(onNumberInputChange(amount, false));
 
@@ -274,10 +344,14 @@ public class ProductController extends AbstractController {
                     return null;
                 }
 
-                String amountText = amount.getText();
-                Integer amountValue = amountText == null || amountText.isEmpty() ? null : Integer.valueOf(amountText.trim());
+                Integer amountValue = null;
+                if (isContent) {
+                    String amountText = amount.getText();
+                    amountValue = amountText == null || amountText.isEmpty() ? null : Integer.valueOf(amountText.trim());
+                }
 
                 return new ContentDTO(
+                        isEdit ? currentItem.getValue().getId() : null,
                         nameValue,
                         amountValue,
                         isContent ? DictionaryType.CONTENT_NAME : DictionaryType.FABRICATOR_NAME

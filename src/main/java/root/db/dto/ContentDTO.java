@@ -8,7 +8,7 @@ public class ContentDTO extends AbstractDTO {
     private String name;
     private Integer amount;
 
-    public ContentDTO(String name, Integer amount, NodeType nodeType) {
+    public ContentDTO(Integer id, String name, Integer amount, NodeType nodeType) {
         super(name, nodeType);
         this.name = name;
         this.amount = amount;

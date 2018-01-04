@@ -24,7 +24,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        main.startWindow(stage);
+        main.init(stage);
+        main.startWindow();
     }
 
     @Override
