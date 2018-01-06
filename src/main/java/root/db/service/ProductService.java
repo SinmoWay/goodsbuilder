@@ -4,7 +4,9 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import root.db.dao.ContentDAO;
 import root.db.dao.DictionaryValueDAO;
+import root.db.dao.FabricatorDAO;
 import root.db.dao.ProductDAO;
 import root.db.dto.ContentDTO;
 import root.db.dto.FabricatorDTO;
@@ -23,11 +25,15 @@ import java.util.stream.Collectors;
 public class ProductService extends AbstractService<ProductDAO> {
 
     private final DictionaryValueDAO dictionaryValueDAO;
+    private final FabricatorDAO fabricatorDAO;
+    private final ContentDAO contentDAO;
 
     @Autowired
-    public ProductService(ProductDAO dao, DictionaryValueDAO dictionaryValueDAO) {
+    public ProductService(ProductDAO dao, DictionaryValueDAO dictionaryValueDAO, FabricatorDAO fabricatorDAO, ContentDAO contentDAO) {
         super(dao);
         this.dictionaryValueDAO = dictionaryValueDAO;
+        this.fabricatorDAO = fabricatorDAO;
+        this.contentDAO = contentDAO;
     }
 
     @Transactional
@@ -36,7 +42,7 @@ public class ProductService extends AbstractService<ProductDAO> {
     }
 
     @Transactional
-    public List<ProductDTO> getAllInitedByType(ProductType type) {
+    public List<ProductDTO> getAllInitializedByType(ProductType type) {
         return dao.getAllByType(type)
                 .stream()
                 .filter(Objects::nonNull)
@@ -85,7 +91,13 @@ public class ProductService extends AbstractService<ProductDAO> {
         entity.getFabricators().clear();
         entity.getFabricators().addAll(dto.getFabricators().stream()
                 .map(fabricatorDTO -> {
-                    FabricatorEntity fabricatorEntity = new FabricatorEntity();
+                    FabricatorEntity fabricatorEntity;
+
+                    if (fabricatorDTO.getId() == null) {
+                        fabricatorEntity = new FabricatorEntity();
+                    } else {
+                        fabricatorEntity = fabricatorDAO.get(fabricatorDTO.getId());
+                    }
 
                     fabricatorEntity.setId(fabricatorDTO.getId());
                     fabricatorEntity.setName(dictionaryValueDAO.getByDictionaryAndValue(DictionaryType.FABRICATOR_NAME, fabricatorDTO.getNodeText()));
@@ -93,7 +105,14 @@ public class ProductService extends AbstractService<ProductDAO> {
                     fabricatorEntity.setContent(
                             fabricatorDTO.getContents().stream()
                                     .map(contentDTO -> {
-                                        ContentEntity contentEntity = new ContentEntity();
+                                        ContentEntity contentEntity;
+
+                                        if (contentDTO.getId() == null) {
+                                            contentEntity = new ContentEntity();
+                                        } else {
+                                            contentEntity = contentDAO.get(contentDTO.getId());
+                                        }
+
                                         contentEntity.setId(contentDTO.getId());
                                         contentEntity.setName(dictionaryValueDAO.getByDictionaryAndValue(DictionaryType.CONTENT_NAME, contentDTO.getName()));
                                         contentEntity.setAmount(contentDTO.getAmount());

@@ -24,7 +24,7 @@ public final class TreeBuilder {
         for (ProductType type : ProductType.values()) {
             TreeItem<AbstractDTO> typedProduct = new TreeItem<>(new AbstractDTO(type.getDescription(), type));
 
-            productService.getAllInitedByType(type).forEach(product -> {
+            productService.getAllInitializedByType(type).forEach(product -> {
                 TreeItem<AbstractDTO> productItem = new TreeItem<>(product);
 
                 product.getFabricators().forEach(fabricator -> {

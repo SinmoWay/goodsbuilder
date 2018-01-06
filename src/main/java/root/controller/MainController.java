@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import root.core.JsonConverter;
 import root.db.dto.*;
 import root.db.service.DictionaryService;
 import root.db.service.ProductService;
@@ -26,6 +27,7 @@ import java.util.Random;
 public class MainController extends AbstractController {
 
     private static final Random random = new Random();
+    private static final String JSON_CATALOG = "json/";
 
     @Autowired
     private ProductEditWindow prodWindow;
@@ -41,6 +43,8 @@ public class MainController extends AbstractController {
     private ImgResourceBuilder imgResourceBuilder;
     @Autowired
     private AlertBuilder alertBuilder;
+    @Autowired
+    private JsonConverter jsonConverter;
 
     //MENU
     @FXML
@@ -125,7 +129,11 @@ public class MainController extends AbstractController {
 
     @FXML
     public void unloadJson() {
-        infoText.setText("Выгружаем");
+        for (ProductType type : ProductType.values()) {
+            jsonConverter.convertToJsonAndSaveToFile(productService.getAllInitializedByType(type), JSON_CATALOG + type.getFileName());
+        }
+        infoText.setText("Выгружено");
+        imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
     }
 
     @FXML

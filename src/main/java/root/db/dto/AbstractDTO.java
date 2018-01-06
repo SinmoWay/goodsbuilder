@@ -1,11 +1,15 @@
 package root.db.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import root.db.type.NodeType;
 
 public class AbstractDTO {
 
+    @JsonIgnore
     protected Integer id;
+    @JsonIgnore
     protected String nodeText;
+    @JsonIgnore
     protected NodeType nodeType;
 
     public AbstractDTO(String nodeText, NodeType nodeType) {
