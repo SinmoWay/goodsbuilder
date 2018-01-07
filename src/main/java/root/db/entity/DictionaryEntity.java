@@ -26,7 +26,7 @@ public class DictionaryEntity {
     private DictionaryType name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "dictionary", cascade = CascadeType.ALL)
-    private transient List<DictionaryValueEntity> values = new ArrayList<>();
+    private List<DictionaryValueEntity> values = new ArrayList<>();
 
     public Integer getId() {
         return id;

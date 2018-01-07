@@ -73,6 +73,14 @@ public class ProductService extends AbstractService<ProductDAO> {
     }
 
     @Transactional
+    public void saveOrUpdate(List<ProductDTO> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            return;
+        }
+        dtos.forEach(this::saveOrUpdate);
+    }
+
+    @Transactional
     public void saveOrUpdate(ProductDTO dto) {
         ProductEntity entity;
 
@@ -100,7 +108,7 @@ public class ProductService extends AbstractService<ProductDAO> {
                     }
 
                     fabricatorEntity.setId(fabricatorDTO.getId());
-                    fabricatorEntity.setName(dictionaryValueDAO.getByDictionaryAndValue(DictionaryType.FABRICATOR_NAME, fabricatorDTO.getNodeText()));
+                    fabricatorEntity.setName(dictionaryValueDAO.getByDictionaryAndValue(DictionaryType.FABRICATOR_NAME, fabricatorDTO.getName()));
 
                     fabricatorEntity.setContent(
                             fabricatorDTO.getContents().stream()

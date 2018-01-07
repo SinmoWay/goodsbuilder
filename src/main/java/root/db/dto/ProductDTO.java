@@ -12,7 +12,12 @@ public class ProductDTO extends AbstractDTO {
     private String description;
     private Double price;
     private Double weight;
-    private final List<FabricatorDTO> fabricators;
+    private List<FabricatorDTO> fabricators;
+
+    @Deprecated
+    public ProductDTO() {
+        super(null, null);
+    }
 
     public ProductDTO(NodeType type) {
         super(null, type);
@@ -67,6 +72,11 @@ public class ProductDTO extends AbstractDTO {
 
     public List<FabricatorDTO> getFabricators() {
         return fabricators;
+    }
+
+    @Deprecated
+    public void setFabricators(List<FabricatorDTO> fabricators) {
+        this.fabricators = fabricators;
     }
 
     @Override

@@ -7,7 +7,12 @@ import java.util.List;
 public class FabricatorDTO extends AbstractDTO {
 
     private String name;
-    private final List<ContentDTO> contents;
+    private List<ContentDTO> contents;
+
+    @Deprecated
+    public FabricatorDTO() {
+        super(null, null);
+    }
 
     public FabricatorDTO(Integer id, String name, List<ContentDTO> contents) {
         super(id, name, null);
@@ -21,12 +26,21 @@ public class FabricatorDTO extends AbstractDTO {
         this.contents = contents;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<ContentDTO> getContents() {
         return contents;
     }
 
-    public String getName() {
-        return name;
+    @Deprecated
+    public void setContents(List<ContentDTO> contents) {
+        this.contents = contents;
     }
 
     @Override

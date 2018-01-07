@@ -8,6 +8,11 @@ public class ContentDTO extends AbstractDTO {
     private String name;
     private Integer amount;
 
+    @Deprecated
+    public ContentDTO() {
+        super(null, null);
+    }
+
     public ContentDTO(Integer id, String name, Integer amount, NodeType nodeType) {
         super(id, name, nodeType);
         this.name = name;
@@ -24,8 +29,16 @@ public class ContentDTO extends AbstractDTO {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getAmount() {
         return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     @Override

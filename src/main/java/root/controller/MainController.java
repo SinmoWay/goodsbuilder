@@ -129,16 +129,27 @@ public class MainController extends AbstractController {
 
     @FXML
     public void unloadJson() {
-        for (ProductType type : ProductType.values()) {
-            jsonConverter.convertToJsonAndSaveToFile(productService.getAllInitializedByType(type), JSON_CATALOG + type.getFileName());
+        ButtonType answer = alertBuilder.alertConfirm("Выгрузка данных", "Действительно выгрузить данные?", "Учтите, что файлы будут заменены!");
+        if (answer == ButtonType.OK) {
+            for (ProductType type : ProductType.values()) {
+                jsonConverter.convertToJsonAndSaveToFile(productService.getAllInitializedByType(type), JSON_CATALOG + type.getFileName());
+            }
+            infoText.setText("Выгружено");
+            imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
         }
-        infoText.setText("Выгружено");
-        imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
     }
 
     @FXML
     public void uploadJson() {
-        infoText.setText("Загружаем");
+        ButtonType answer = alertBuilder.alertConfirm("Загрузка данных", "Действительно загрузить данные?", "Учтите, что записи могут быть дублированы!");
+        if (answer == ButtonType.OK) {
+            for (ProductType type : ProductType.values()) {
+                productService.saveOrUpdate(jsonConverter.loadFromFile(JSON_CATALOG + type.getFileName(), type));
+            }
+            onRefresh();
+            infoText.setText("Загружено");
+            imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
+        }
     }
 
     @FXML
