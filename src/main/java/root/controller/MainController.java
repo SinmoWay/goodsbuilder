@@ -175,7 +175,13 @@ public class MainController extends AbstractController {
         currentItem = null;
         TreeItem<AbstractDTO> root = new TreeItem<>(new AbstractDTO("Все", null));
         root.setExpanded(true);
-        root.getChildren().addAll(treeBuilder.getProductsNode(), treeBuilder.getFabricatorName(), treeBuilder.getContentNames());
+
+        TreeItem<AbstractDTO> dict = new TreeItem<>(new AbstractDTO("Словари", null));
+        dict.setExpanded(true);
+
+        dict.getChildren().addAll(treeBuilder.getFabricatorName(), treeBuilder.getContentNames());
+        root.getChildren().addAll(treeBuilder.getProductsNode(), dict);
+
         mainTree.setRoot(root);
         mainTree.refresh();
     }
