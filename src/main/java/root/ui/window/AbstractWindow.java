@@ -9,7 +9,7 @@ import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.controller.AbstractController;
 import root.db.type.ImgResource;
-import root.ui.builder.AlertBuilder;
+import root.ui.builder.DialogBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ import java.io.InputStream;
 public abstract class AbstractWindow<T extends AbstractController> {
 
     @Autowired
-    protected AlertBuilder alertBuilder;
+    protected DialogBuilder dialogBuilder;
 
     protected final String title;
     protected final String viewPath;
@@ -70,7 +70,7 @@ public abstract class AbstractWindow<T extends AbstractController> {
 
     public void startWindow() {
         if (this.stage == null) {
-            alertBuilder.showError(
+            dialogBuilder.showError(
                     "Ужасная ошибка разработчика",
                     "Сообщите об этом разработчику, описав условия появления"
             );

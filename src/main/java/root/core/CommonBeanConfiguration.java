@@ -2,7 +2,7 @@ package root.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import root.ui.builder.AlertBuilder;
+import root.ui.builder.DialogBuilder;
 import root.ui.builder.ImgResourceBuilder;
 import root.ui.builder.TreeBuilder;
 
@@ -12,8 +12,8 @@ import java.io.IOException;
 public class CommonBeanConfiguration {
 
     @Bean
-    public AlertBuilder getAlertBuilder() {
-        return new AlertBuilder();
+    public DialogBuilder getAlertBuilder() {
+        return new DialogBuilder();
     }
 
     @Bean

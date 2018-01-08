@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
@@ -56,18 +55,6 @@
                     <Color blue="0.625" green="0.625" red="0.625"/>
                 </textFill>
             </Label>
-            <Label fx:id="infoText" layoutX="345.0" layoutY="5.0" text="Видишь текст? А его нет"
-                   AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
-                <font>
-                    <Font size="11.0"/>
-                </font>
-                <textFill>
-                    <Color blue="0.625" green="0.625" red="0.625"/>
-                </textFill>
-            </Label>
-            <ImageView fx:id="statusImg" fitHeight="20.0" fitWidth="20.0" layoutX="868.0" layoutY="3.0"
-                       pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0"
-                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0"/>
         </AnchorPane>
     </SplitPane>
 </VBox>

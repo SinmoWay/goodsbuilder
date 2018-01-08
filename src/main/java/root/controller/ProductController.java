@@ -21,7 +21,7 @@ import root.db.service.DictionaryService;
 import root.db.service.ProductService;
 import root.db.type.DictionaryType;
 import root.db.type.ImgResource;
-import root.ui.builder.AlertBuilder;
+import root.ui.builder.DialogBuilder;
 import root.ui.builder.ImgResourceBuilder;
 
 import javax.annotation.PostConstruct;
@@ -46,7 +46,7 @@ public class ProductController extends AbstractController {
     @Autowired
     private ImgResourceBuilder imgResourceBuilder;
     @Autowired
-    private AlertBuilder alertBuilder;
+    private DialogBuilder dialogBuilder;
 
     @FXML
     private ImageView imgPlace;
@@ -171,7 +171,7 @@ public class ProductController extends AbstractController {
             String imgUri = new File(IMG_CATALOG + imgNameBox.getText().trim()).toURI().toString();
             imgResourceBuilder.initView(imgPlace, imgUri);
         } catch (Exception ex) {
-            alertBuilder.showError("Отобразить изображение невозможно!",
+            dialogBuilder.showError("Отобразить изображение невозможно!",
                     "Проверьте расположение и указанное имя файла. Не забудьте указать расширение."
             );
         }
@@ -216,12 +216,12 @@ public class ProductController extends AbstractController {
         if (isNotRoot()) {
             ButtonType answer;
             if (currentItem.getValue().getNodeType() == DictionaryType.CONTENT_NAME) {
-                answer = alertBuilder.alertConfirm("Удалить",
+                answer = dialogBuilder.alertConfirm("Удалить",
                         "Запись: \"" + currentItem.getValue().getName() + "\" будет удалена",
                         "Уверены, что хотите удалить эту запись?"
                 );
             } else {
-                answer = alertBuilder.alertConfirm("Удалить",
+                answer = dialogBuilder.alertConfirm("Удалить",
                         "Запись: \"" + currentItem.getValue().getName() + "\" и все ее потомки будут удалены",
                         "Уверены, что хотите удалить эту запись и всех ее потомков?"
                 );
@@ -235,7 +235,7 @@ public class ProductController extends AbstractController {
 
     @FXML
     public void onSave() {
-        ButtonType answer = alertBuilder.alertConfirm("Сохранение", "Сохранение данного товара", "Сохранить текущий товар?");
+        ButtonType answer = dialogBuilder.alertConfirm("Сохранение", "Сохранение данного товара", "Сохранить текущий товар?");
         if (answer != ButtonType.OK) {
             return;
         }
@@ -305,6 +305,7 @@ public class ProductController extends AbstractController {
         dialog.setHeaderText(text);
 
         dialog.setGraphic(imgResourceBuilder.getSqView(ImgResource.TUX, 50));
+        dialogBuilder.setIcon(dialog);
 
         ButtonType saveButtonType = new ButtonType("Сохранить", ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Отменить", ButtonData.CANCEL_CLOSE);
@@ -322,7 +323,7 @@ public class ProductController extends AbstractController {
                 .getAllValuesByDictionaryType(isContent ? DictionaryType.CONTENT_NAME : DictionaryType.FABRICATOR_NAME);
 
         if (dictionaryValues == null || dictionaryValues.isEmpty()) {
-            alertBuilder.showError("Словари не заполнены!", "Заполните словари и возвращайтесь");
+            dialogBuilder.showError("Словари не заполнены!", "Заполните словари и возвращайтесь");
             return null;
         }
 

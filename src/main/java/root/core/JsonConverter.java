@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import root.db.dto.ProductDTO;
 import root.db.type.NodeType;
-import root.ui.builder.AlertBuilder;
+import root.ui.builder.DialogBuilder;
 
 import java.io.*;
 import java.util.List;
@@ -19,14 +19,14 @@ public class JsonConverter {
     private static final ObjectMapper converter = new ObjectMapper();
 
     @Autowired
-    private AlertBuilder alertBuilder;
+    private DialogBuilder dialogBuilder;
 
     public void convertToJsonAndSaveToFile(List<ProductDTO> toJson, String fullFileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullFileName))) {
             writer.write(converter.writeValueAsString(toJson));
             writer.flush();
         } catch (IOException ex) {
-            alertBuilder.showError("Ошибка парсинга в json", "Сообщите разработчику. Не забудьте логи");
+            dialogBuilder.showError("Ошибка парсинга в json", "Сообщите разработчику. Не забудьте логи");
             log.error("Ошибка парсинга в json", ex);
         }
     }
@@ -42,7 +42,7 @@ public class JsonConverter {
             dtos.forEach(dto -> dto.setNodeType(type));
             return dtos;
         } catch (IOException ex) {
-            alertBuilder.showError("Ошибка парсинга из json", "Сообщите разработчику. Не забудьте логи");
+            dialogBuilder.showError("Ошибка парсинга из json", "Сообщите разработчику. Не забудьте логи");
             log.error("Ошибка парсинга из json", ex);
             return null;
         }

@@ -3,7 +3,6 @@ package root.controller;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import root.db.service.ProductService;
 import root.db.type.DictionaryType;
 import root.db.type.ImgResource;
 import root.db.type.ProductType;
-import root.ui.builder.AlertBuilder;
+import root.ui.builder.DialogBuilder;
 import root.ui.builder.ImgResourceBuilder;
 import root.ui.builder.TreeBuilder;
 import root.ui.window.DictionaryEditWindow;
@@ -42,7 +41,7 @@ public class MainController extends AbstractController {
     @Autowired
     private ImgResourceBuilder imgResourceBuilder;
     @Autowired
-    private AlertBuilder alertBuilder;
+    private DialogBuilder dialogBuilder;
     @Autowired
     private JsonConverter jsonConverter;
 
@@ -68,12 +67,6 @@ public class MainController extends AbstractController {
     @FXML
     private TreeView<AbstractDTO> mainTree;
 
-    //STATUS PART
-    @FXML
-    private Label infoText;
-    @FXML
-    private ImageView statusImg;
-
     private TreeItem<AbstractDTO> currentTreeItem = null;
     private AbstractDTO currentItem = null;
 
@@ -89,9 +82,6 @@ public class MainController extends AbstractController {
         addButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.ADD, 25));
         editButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.EDIT, 25));
         removeButton.setGraphic(imgResourceBuilder.getSqView(ImgResource.REMOVE, 25));
-
-        imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
-        infoText.setText("Успешно загружено");
     }
 
     @Override
@@ -130,26 +120,24 @@ public class MainController extends AbstractController {
 
     @FXML
     public void unloadJson() {
-        ButtonType answer = alertBuilder.alertConfirm("Выгрузка данных", "Действительно выгрузить данные?", "Учтите, что файлы будут заменены!");
+        ButtonType answer = dialogBuilder.alertConfirm("Выгрузка данных", "Действительно выгрузить данные?", "Учтите, что файлы будут заменены!");
         if (answer == ButtonType.OK) {
             for (ProductType type : ProductType.values()) {
                 jsonConverter.convertToJsonAndSaveToFile(productService.getAllInitializedByType(type), JSON_CATALOG + type.getFileName());
             }
-            infoText.setText("Выгружено");
-            imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
+            dialogBuilder.showInfo("Выгружено", ImgResource.FACE_GOOD);
         }
     }
 
     @FXML
     public void uploadJson() {
-        ButtonType answer = alertBuilder.alertConfirm("Загрузка данных", "Действительно загрузить данные?", "Учтите, что записи могут быть дублированы!");
+        ButtonType answer = dialogBuilder.alertConfirm("Загрузка данных", "Действительно загрузить данные?", "Учтите, что записи могут быть дублированы!");
         if (answer == ButtonType.OK) {
             for (ProductType type : ProductType.values()) {
                 productService.saveOrUpdate(jsonConverter.loadFromFile(JSON_CATALOG + type.getFileName(), type));
             }
             onRefresh();
-            infoText.setText("Загружено");
-            imgResourceBuilder.initView(statusImg, ImgResource.FACE_GOOD, 20);
+            dialogBuilder.showInfo("Загружено", ImgResource.FACE_GOOD);
         }
     }
 
@@ -211,7 +199,7 @@ public class MainController extends AbstractController {
             return;
         }
         if (currentItem.getId() != null) {
-            ButtonType answer = alertBuilder.alertConfirm(
+            ButtonType answer = dialogBuilder.alertConfirm(
                     "Удалить",
                     "Запись: \"" + currentItem.getNodeText() + "\" будет удалена",
                     "Уверены, что хотите удалить эту запись?"
@@ -270,13 +258,11 @@ public class MainController extends AbstractController {
             default:
                 phrase = "Бессмысленное действие";
         }
-        imgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
-        infoText.setText(phrase);
+        dialogBuilder.showInfo(phrase, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD);
     }
 
     private void setChoseSmtAdvice() {
-        imgResourceBuilder.initView(statusImg, random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD, 20);
-        infoText.setText("Нужно хоть что-нибудь выбрать");
+        dialogBuilder.showInfo("Нужно хоть что-нибудь выбрать", random.nextBoolean() ? ImgResource.FACE_NORMAL : ImgResource.FACE_BAD);
     }
 
     private AbstractDTO getDtoFromItem(TreeItem<AbstractDTO> item) {
