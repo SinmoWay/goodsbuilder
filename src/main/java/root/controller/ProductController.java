@@ -161,6 +161,7 @@ public class ProductController extends AbstractController {
             if (onEndEvent != null) {
                 onEndEvent.handle(event);
             }
+            window.closeWindow();
         };
     }
 

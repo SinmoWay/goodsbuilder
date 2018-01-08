@@ -50,6 +50,7 @@ public class DictionaryEditController extends AbstractController {
             if (onEndEvent != null) {
                 onEndEvent.handle(event);
             }
+            window.closeWindow();
         };
     }
 

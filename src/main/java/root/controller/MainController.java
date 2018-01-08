@@ -114,6 +114,7 @@ public class MainController extends AbstractController {
             if (prodWindow.isShown()) {
                 prodWindow.closeWindow();
             }
+            window.closeWindow();
         };
     }
 
