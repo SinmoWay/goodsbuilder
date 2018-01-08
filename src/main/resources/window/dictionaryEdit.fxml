@@ -10,9 +10,9 @@
       fx:controller="root.controller.DictionaryEditController">
     <AnchorPane maxHeight="150.0" maxWidth="400.0" minHeight="150.0" minWidth="400.0" prefHeight="150.0"
                 prefWidth="400.0">
-        <Label fx:id="headerLabel" alignment="CENTER" text="Добавить/Редактировать Имя словоря"
-               textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="10.0"
-               AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <Label fx:id="headerLabel" alignment="CENTER" text="Добавить/Редактировать Имя словоря" textAlignment="CENTER"
+               wrapText="true" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+               AnchorPane.topAnchor="10.0">
             <font>
                 <Font name="System Bold" size="20.0"/>
             </font>
@@ -20,8 +20,8 @@
         <TextField fx:id="valueBox" prefHeight="25.0" prefWidth="566.0" AnchorPane.bottomAnchor="50.0"
                    AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"/>
         <Button mnemonicParsing="false" onAction="#onSave" text="Сохранить" AnchorPane.bottomAnchor="10.0"
-                AnchorPane.leftAnchor="10.0"/>
-        <Button mnemonicParsing="false" onAction="#onCancel" text="Отменить" AnchorPane.bottomAnchor="10.0"
                 AnchorPane.rightAnchor="10.0"/>
+        <Button mnemonicParsing="false" onAction="#onCancel" text="Отменить" AnchorPane.bottomAnchor="10.0"
+                AnchorPane.leftAnchor="10.0"/>
     </AnchorPane>
 </VBox>

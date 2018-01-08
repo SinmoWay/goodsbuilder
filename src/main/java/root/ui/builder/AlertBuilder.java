@@ -1,6 +1,7 @@
 package root.ui.builder;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 public class AlertBuilder {
 
     public ButtonType alertConfirm(String title, String header, String text) {
-        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert confirmationDialog = new Alert(AlertType.CONFIRMATION);
 
         confirmationDialog.setTitle(title);
         confirmationDialog.setHeaderText(header);
@@ -21,7 +22,7 @@ public class AlertBuilder {
     }
 
     public void showError(String header, String content) {
-        Alert error = new Alert(Alert.AlertType.ERROR);
+        Alert error = new Alert(AlertType.ERROR);
 
         error.setTitle("Ошибка");
         error.setHeaderText(header);

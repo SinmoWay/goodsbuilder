@@ -60,8 +60,8 @@
                    pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="160.0"/>
 
         <Button layoutX="16.0" layoutY="353.0" mnemonicParsing="false" onAction="#onSave" text="Сохранить"
-                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"/>
-        <Button layoutX="524.0" layoutY="353.0" mnemonicParsing="false" onAction="#onCancel" text="Отмена"
                 AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0"/>
+        <Button layoutX="524.0" layoutY="353.0" mnemonicParsing="false" onAction="#onCancel" text="Отмена"
+                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"/>
     </AnchorPane>
 </VBox>
