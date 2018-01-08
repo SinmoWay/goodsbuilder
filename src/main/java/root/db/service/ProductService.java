@@ -4,14 +4,12 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import root.db.dao.ContentDAO;
-import root.db.dao.DictionaryValueDAO;
-import root.db.dao.FabricatorDAO;
-import root.db.dao.ProductDAO;
+import root.db.dao.*;
 import root.db.dto.ContentDTO;
 import root.db.dto.FabricatorDTO;
 import root.db.dto.ProductDTO;
 import root.db.entity.ContentEntity;
+import root.db.entity.DictionaryValueEntity;
 import root.db.entity.FabricatorEntity;
 import root.db.entity.ProductEntity;
 import root.db.type.DictionaryType;
@@ -24,16 +22,19 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService extends AbstractService<ProductDAO> {
 
-    private final DictionaryValueDAO dictionaryValueDAO;
     private final FabricatorDAO fabricatorDAO;
     private final ContentDAO contentDAO;
 
+    private final DictionaryDAO dictionaryDAO;
+    private final DictionaryValueDAO dictionaryValueDAO;
+
     @Autowired
-    public ProductService(ProductDAO dao, DictionaryValueDAO dictionaryValueDAO, FabricatorDAO fabricatorDAO, ContentDAO contentDAO) {
+    public ProductService(ProductDAO dao, FabricatorDAO fabricatorDAO, ContentDAO contentDAO, DictionaryDAO dictionaryDAO, DictionaryValueDAO dictionaryValueDAO) {
         super(dao);
-        this.dictionaryValueDAO = dictionaryValueDAO;
         this.fabricatorDAO = fabricatorDAO;
         this.contentDAO = contentDAO;
+        this.dictionaryDAO = dictionaryDAO;
+        this.dictionaryValueDAO = dictionaryValueDAO;
     }
 
     @Transactional
@@ -98,43 +99,59 @@ public class ProductService extends AbstractService<ProductDAO> {
 
         entity.getFabricators().clear();
         entity.getFabricators().addAll(dto.getFabricators().stream()
-                .map(fabricatorDTO -> {
-                    FabricatorEntity fabricatorEntity;
-
-                    if (fabricatorDTO.getId() == null) {
-                        fabricatorEntity = new FabricatorEntity();
-                    } else {
-                        fabricatorEntity = fabricatorDAO.get(fabricatorDTO.getId());
-                    }
-
-                    fabricatorEntity.setId(fabricatorDTO.getId());
-                    fabricatorEntity.setName(dictionaryValueDAO.getByDictionaryAndValue(DictionaryType.FABRICATOR_NAME, fabricatorDTO.getName()));
-
-                    fabricatorEntity.setContent(
-                            fabricatorDTO.getContents().stream()
-                                    .map(contentDTO -> {
-                                        ContentEntity contentEntity;
-
-                                        if (contentDTO.getId() == null) {
-                                            contentEntity = new ContentEntity();
-                                        } else {
-                                            contentEntity = contentDAO.get(contentDTO.getId());
-                                        }
-
-                                        contentEntity.setId(contentDTO.getId());
-                                        contentEntity.setName(dictionaryValueDAO.getByDictionaryAndValue(DictionaryType.CONTENT_NAME, contentDTO.getName()));
-                                        contentEntity.setAmount(contentDTO.getAmount());
-                                        return contentEntity;
-                                    })
-                                    .collect(Collectors.toList())
-                    );
-
-                    return fabricatorEntity;
-                })
+                .map(this::convertFabricatorFromDTO)
                 .collect(Collectors.toList())
         );
 
         dao.save(entity);
+    }
+
+    private FabricatorEntity convertFabricatorFromDTO(FabricatorDTO fabricatorDTO) {
+        FabricatorEntity fabricatorEntity;
+
+        if (fabricatorDTO.getId() == null) {
+            fabricatorEntity = new FabricatorEntity();
+        } else {
+            fabricatorEntity = fabricatorDAO.get(fabricatorDTO.getId());
+        }
+
+        fabricatorEntity.setId(fabricatorDTO.getId());
+        fabricatorEntity.setName(getDicValueByDicTypeAndValue(DictionaryType.FABRICATOR_NAME, fabricatorDTO.getName()));
+
+        fabricatorEntity.setContent(
+                fabricatorDTO.getContents().stream()
+                        .map(this::convertContentFromDTO)
+                        .collect(Collectors.toList())
+        );
+
+        return fabricatorEntity;
+    }
+
+    private ContentEntity convertContentFromDTO(ContentDTO contentDTO) {
+        ContentEntity contentEntity;
+
+        if (contentDTO.getId() == null) {
+            contentEntity = new ContentEntity();
+        } else {
+            contentEntity = contentDAO.get(contentDTO.getId());
+        }
+
+        contentEntity.setId(contentDTO.getId());
+        contentEntity.setName(getDicValueByDicTypeAndValue(DictionaryType.CONTENT_NAME, contentDTO.getName()));
+        contentEntity.setAmount(contentDTO.getAmount());
+        return contentEntity;
+    }
+
+    private DictionaryValueEntity getDicValueByDicTypeAndValue(DictionaryType type, String value) {
+        DictionaryValueEntity contentName = dictionaryValueDAO.getByDictionaryAndValue(type, value);
+        if (contentName != null) {
+            return contentName;
+        }
+        contentName = new DictionaryValueEntity();
+        contentName.setDictionary(dictionaryDAO.getByName(type));
+        contentName.setValue(value);
+        dictionaryValueDAO.save(contentName);
+        return contentName;
     }
 
 }
