@@ -1,6 +1,8 @@
 package root.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import root.db.dto.ProductDTO;
@@ -13,6 +15,7 @@ import java.util.List;
 @Component
 public class JsonConverter {
 
+    private static final Logger log = LogManager.getLogger(JsonConverter.class);
     private static final ObjectMapper converter = new ObjectMapper();
 
     @Autowired
@@ -23,7 +26,8 @@ public class JsonConverter {
             writer.write(converter.writeValueAsString(toJson));
             writer.flush();
         } catch (IOException ex) {
-            alertBuilder.showError("Ошибка парсинга в json", ex.toString());
+            alertBuilder.showError("Ошибка парсинга в json", "Сообщите разработчику. Не забудьте логи");
+            log.error("Ошибка парсинга в json", ex);
         }
     }
 
@@ -38,7 +42,8 @@ public class JsonConverter {
             dtos.forEach(dto -> dto.setNodeType(type));
             return dtos;
         } catch (IOException ex) {
-            alertBuilder.showError("Ошибка парсинга из json", ex.toString());
+            alertBuilder.showError("Ошибка парсинга из json", "Сообщите разработчику. Не забудьте логи");
+            log.error("Ошибка парсинга из json", ex);
             return null;
         }
     }
