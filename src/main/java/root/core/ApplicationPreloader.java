@@ -47,4 +47,5 @@ public class ApplicationPreloader extends Preloader {
             System.out.println("Приложение загружено и запускается ...");
         }
     }
+
 }

@@ -6,14 +6,13 @@
 
     <groupId>Europe</groupId>
     <artifactId>GoodsBuilder</artifactId>
-    <version>1.0</version>
+    <version>1.1.0</version>
     <name>GoodsBuilder</name>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <project.version>1.0.7</project.version>
     </properties>
 
     <parent>
