@@ -25,8 +25,8 @@ public class Main extends Application {
         try {
             savedArgs = args;
             launch(Main.class, args);
-        } catch (Exception ex) {
-            log.error("Ошибка приложения", ex);
+        } catch (Throwable t) {
+            log.error("Ошибка приложения", t);
         }
     }
 
@@ -37,8 +37,8 @@ public class Main extends Application {
             context.getAutowireCapableBeanFactory().autowireBean(this);
             main.init(stage);
             main.startWindow();
-        } catch (Exception ex) {
-            log.error("Ошибка запуска", ex);
+        } catch (Throwable t) {
+            log.error("Ошибка запуска", t);
         }
     }
 
@@ -47,8 +47,8 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
-        super.stop();
+    public void stop() {
         context.close();
     }
+
 }

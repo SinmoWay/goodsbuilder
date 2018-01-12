@@ -9,7 +9,6 @@ import java.io.IOException;
 public class MainWindow extends AbstractWindow<MainController> {
 
     public MainWindow() throws IOException {
-        super("window/main.fxml", "Формирование данных", true);
+        super("/window/main.fxml", "Формирование данных", true);
     }
-
 }
