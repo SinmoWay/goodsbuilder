@@ -4,6 +4,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<?import java.net.URL?>
 <VBox maxHeight="450.0" maxWidth="650.0" minHeight="450.0" minWidth="650.0" prefHeight="450.0" prefWidth="650.0"
       xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="root.controller.ProductController">
@@ -67,4 +68,7 @@
                 AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="100.0" disable="true" fx:id="saveAsButton"/>
 
     </AnchorPane>
+    <stylesheets>
+        <URL value="@../css/productEdit.css"/>
+    </stylesheets>
 </VBox>
