@@ -10,6 +10,7 @@ import root.db.type.NodeType;
 import root.ui.builder.DialogBuilder;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -23,6 +24,11 @@ public class JsonConverter {
 
     public void convertToJsonAndSaveToFile(List<ProductDTO> toJson, String fullFileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullFileName))) {
+            toJson.sort(
+                    Comparator.comparing(ProductDTO::getDescription)
+                            .thenComparing(ProductDTO::getPrice)
+                            .thenComparing(ProductDTO::getWeight)
+            );
             writer.write(converter.writeValueAsString(toJson));
             writer.flush();
         } catch (IOException ex) {
