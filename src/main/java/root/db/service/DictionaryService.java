@@ -43,9 +43,17 @@ public class DictionaryService extends AbstractService<DictionaryValueDAO> {
 
     @Transactional
     public void saveOrUpdate(DictionaryValueDTO dto) {
+        if (dto.getNodeText() == null || dto.getNodeText().isEmpty()) {
+            return;
+        }
+
         DictionaryValueEntity entity;
 
         if (dto.getId() == null) {
+            entity = dao.getByDictionaryAndValue(dto.getDictionary().getName(), dto.getNodeText());
+            if (entity != null)
+                return;
+
             entity = new DictionaryValueEntity();
             entity.setDictionary(dto.getDictionary());
         } else {

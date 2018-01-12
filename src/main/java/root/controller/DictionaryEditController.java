@@ -8,6 +8,8 @@ import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import root.db.dto.DictionaryValueDTO;
 import root.db.service.DictionaryService;
+import root.db.type.ImgResource;
+import root.ui.builder.DialogBuilder;
 
 import javax.annotation.PostConstruct;
 
@@ -25,6 +27,8 @@ public class DictionaryEditController extends AbstractController {
 
     @Autowired
     private DictionaryService dictionaryService;
+    @Autowired
+    private DialogBuilder dialogBuilder;
 
     @Override
     @PostConstruct
@@ -57,7 +61,13 @@ public class DictionaryEditController extends AbstractController {
     @FXML
     public void onSave() {
         if (dto != null) {
-            dto.setNodeText(valueBox.getText());
+            String newValue = valueBox.getText();
+            newValue = newValue == null ? "" : newValue.trim();
+            if (newValue.isEmpty()) {
+                dialogBuilder.showInfo("Пустое значение сохранено не будет", ImgResource.SETTINGS);
+                return;
+            }
+            dto.setNodeText(newValue);
             dictionaryService.saveOrUpdate(dto);
         }
         window.closeWindow();
