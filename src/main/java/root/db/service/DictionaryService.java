@@ -64,4 +64,16 @@ public class DictionaryService extends AbstractService<DictionaryValueDAO> {
         dao.save(entity);
     }
 
+    @Transactional
+    public boolean canDelete(Integer id, DictionaryType type) {
+        String tableName = null;
+        if (type == DictionaryType.CONTENT_NAME) {
+            tableName = "Content";
+        } else if (type == DictionaryType.FABRICATOR_NAME) {
+            tableName = "Fabricator";
+        }
+
+        return id != null && id >= 0 && tableName != null && dao.canDelete(tableName, id);
+    }
+
 }

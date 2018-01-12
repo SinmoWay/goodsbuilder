@@ -8,6 +8,16 @@ import javax.persistence.*;
                 query = "SELECT dv FROM DictionaryValueEntity dv WHERE dv.dictionary.name = :dic AND dv.value LIKE :val"
         )
 })
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "DictionaryValueEntity.checkForDeleteInContent",
+                query = "SELECT 1 FROM CONTENT WHERE ID_NAME = :id"
+        ),
+        @NamedNativeQuery(
+                name = "DictionaryValueEntity.checkForDeleteInFabricator",
+                query = "SELECT 1 FROM FABRICATOR WHERE ID_NAME = :id"
+        )
+})
 @Entity
 @Table(name = "DICTIONARY_VALUE")
 public class DictionaryValueEntity {

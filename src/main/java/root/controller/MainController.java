@@ -206,8 +206,12 @@ public class MainController extends AbstractController {
             );
 
             if (answer == ButtonType.OK && currentItem instanceof DictionaryValueDTO) {
-                dictionaryService.delete(currentItem.getId());
-                onRefresh();
+                if (dictionaryService.canDelete(currentItem.getId(), (DictionaryType) currentItem.getNodeType())) {
+                    dictionaryService.delete(currentItem.getId());
+                    onRefresh();
+                } else {
+                    dialogBuilder.showError("Невозможно удалить значение словаря!", "Оно еще используется где-то в товарах");
+                }
             } else if (answer == ButtonType.OK && currentItem instanceof ProductDTO) {
                 productService.delete(currentItem.getId());
                 onRefresh();

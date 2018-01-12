@@ -20,4 +20,11 @@ public class DictionaryValueDAO extends AbstractDAO<DictionaryValueEntity> {
                 .uniqueResult();
     }
 
+    public boolean canDelete(String tableName, Integer id) {
+        return sessionFactory.getCurrentSession()
+                .getNamedQuery("DictionaryValueEntity.checkForDeleteIn" + tableName)
+                .setParameter("id", id)
+                .uniqueResult() == null;
+    }
+
 }

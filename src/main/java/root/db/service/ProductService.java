@@ -97,7 +97,13 @@ public class ProductService extends AbstractService<ProductDAO> {
         entity.setPrice(dto.getPrice());
         entity.setWeight(dto.getWeight());
 
+        entity.getFabricators().forEach(fabricator -> {
+            Hibernate.initialize(fabricator.getContent());
+            fabricator.getContent().forEach(content -> contentDAO.delete(content.getId()));
+            fabricatorDAO.delete(fabricator.getId());
+        });
         entity.getFabricators().clear();
+
         entity.getFabricators().addAll(dto.getFabricators().stream()
                 .map(this::convertFabricatorFromDTO)
                 .collect(Collectors.toList())
