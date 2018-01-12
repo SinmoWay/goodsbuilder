@@ -6,46 +6,38 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.InputStream;
 
 public class ApplicationPreloader extends Preloader {
 
+    private Scene scene;
     private Stage stage;
 
     @Override
     public void start(Stage primaryStage) {
         this.stage = primaryStage;
-        initLoading();
+        stage.setScene(scene);
+        stage.setTitle(null);
+        stage.getIcons().clear();
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setAlwaysOnTop(true);
+        stage.show();
     }
 
-    private void initLoading() {
-        try (InputStream fxmlStream = getClass().getClassLoader().getResourceAsStream("window/loading.fxml")) {
-            FXMLLoader loader = new FXMLLoader();
-            loader.load(fxmlStream);
+    @Override
+    public void init() throws Exception {
 
-            stage.setScene(new Scene(loader.getRoot()));
+        this.scene = new Scene(FXMLLoader.load(getClass().getResource("/window/loading.fxml")));
+        this.scene.setFill(null);
+        this.scene.getStylesheets().add("/css/loading.css");
 
-            stage.setTitle(null);
-            stage.getIcons().clear();
-
-            stage.centerOnScreen();
-            stage.setResizable(false);
-
-            stage.initStyle(StageStyle.UNDECORATED);
-
-
-            stage.show();
-        } catch (Exception ex) {
-            System.out.println("Ошибка прелодера");
-        }
     }
 
     @Override
     public void handleStateChangeNotification(StateChangeNotification evt) {
         if (evt.getType() == StateChangeNotification.Type.BEFORE_START) {
-            stage.close();
-            System.out.println("Приложение загружено и запускается ...");
+
         }
     }
-
 }

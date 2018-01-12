@@ -12,7 +12,6 @@ import root.db.type.ImgResource;
 import root.ui.builder.DialogBuilder;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public abstract class AbstractWindow<T extends AbstractController> {
 
@@ -34,13 +33,13 @@ public abstract class AbstractWindow<T extends AbstractController> {
         this.title = title;
         this.viewPath = viewPath;
         this.resizable = resizable;
-        try (InputStream fxmlStream = getClass().getClassLoader().getResourceAsStream(viewPath)) {
-            FXMLLoader loader = new FXMLLoader();
-            loader.load(fxmlStream);
-            this.view = loader.getRoot();
-            this.controller = loader.getController();
-            this.controller.setThisWindow(this);
-        }
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(viewPath));
+
+        this.view = loader.load();
+        this.controller = loader.getController();
+        this.controller.setThisWindow(this);
     }
 
     public T getController() {

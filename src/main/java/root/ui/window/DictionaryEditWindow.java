@@ -7,7 +7,7 @@ import java.io.IOException;
 public class DictionaryEditWindow extends AbstractWindow<DictionaryEditController> {
 
     public DictionaryEditWindow() throws IOException {
-        super("window/dictionaryEdit.fxml", "Значение словаря", false);
+        super("/window/dictionaryEdit.fxml", "Значение словаря", false);
     }
 
 }

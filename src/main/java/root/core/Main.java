@@ -36,6 +36,7 @@ public class Main extends Application {
             context = SpringApplication.run(getClass(), savedArgs);
             context.getAutowireCapableBeanFactory().autowireBean(this);
             main.init(stage);
+            //notifyPreloader();
             main.startWindow();
         } catch (Exception ex) {
             log.error("Ошибка запуска", ex);
@@ -47,8 +48,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
-        super.stop();
+    public void stop() {
         context.close();
     }
 }
