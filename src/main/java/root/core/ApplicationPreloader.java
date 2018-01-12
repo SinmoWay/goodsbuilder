@@ -10,11 +10,10 @@ import javafx.stage.StageStyle;
 public class ApplicationPreloader extends Preloader {
 
     private Scene scene;
-    private Stage stage;
 
     @Override
     public void start(Stage primaryStage) {
-        this.stage = primaryStage;
+        Stage stage = primaryStage;
         stage.setScene(scene);
         stage.setTitle(null);
         stage.getIcons().clear();
@@ -27,11 +26,10 @@ public class ApplicationPreloader extends Preloader {
 
     @Override
     public void init() throws Exception {
-
-        this.scene = new Scene(FXMLLoader.load(getClass().getResource("/window/loading.fxml")));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/window/loading.fxml"));
+        this.scene = new Scene(loader.load());
         this.scene.setFill(null);
-        this.scene.getStylesheets().add("/css/loading.css");
-
     }
 
     @Override

@@ -18,20 +18,17 @@ public abstract class AbstractWindow<T extends AbstractController> {
     @Autowired
     protected DialogBuilder dialogBuilder;
 
-    protected final String title;
-    protected final String viewPath;
-    protected final boolean resizable;
-    protected final Parent view;
+    private final String title;
+    private final boolean resizable;
+    private Parent view;
     protected final T controller;
 
     private Stage stage;
-    private Scene scene;
 
     private boolean shown = false;
 
-    protected AbstractWindow(String viewPath, String title, boolean resizable) throws IOException {
+    AbstractWindow(String viewPath, String title, boolean resizable) throws IOException {
         this.title = title;
-        this.viewPath = viewPath;
         this.resizable = resizable;
 
         FXMLLoader loader = new FXMLLoader();
@@ -53,7 +50,7 @@ public abstract class AbstractWindow<T extends AbstractController> {
     public void init(Stage stage) {
         this.stage = stage;
 
-        this.scene = new Scene(view);
+        Scene scene = new Scene(view);
         this.stage.setScene(scene);
 
         this.stage.setTitle(title);
@@ -86,5 +83,4 @@ public abstract class AbstractWindow<T extends AbstractController> {
             this.stage.hide();
         }
     }
-
 }
