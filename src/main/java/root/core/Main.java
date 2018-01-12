@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import root.ui.window.LoadingWindow;
 import root.ui.window.MainWindow;
 
 @SpringBootApplication
@@ -33,9 +34,11 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
+            LoadingWindow loadingWindow = LoadingWindow.getInstance();
             context = SpringApplication.run(getClass(), savedArgs);
             context.getAutowireCapableBeanFactory().autowireBean(this);
             main.init(stage);
+            loadingWindow.closeWindow();
             main.startWindow();
         } catch (Throwable t) {
             log.error("Ошибка запуска", t);

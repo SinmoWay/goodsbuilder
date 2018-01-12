@@ -6,35 +6,39 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import root.controller.AbstractController;
 import root.db.type.ImgResource;
-import root.ui.builder.DialogBuilder;
 
 import java.io.IOException;
 
 public abstract class AbstractWindow<T extends AbstractController> {
 
-    @Autowired
-    protected DialogBuilder dialogBuilder;
+    private static final Logger log = LogManager.getLogger(AbstractWindow.class);
 
     private final String title;
     private final boolean resizable;
-    private Parent view;
     protected final T controller;
 
+    private Parent view;
+    private Scene scene;
     private Stage stage;
-
     private boolean shown = false;
 
-    AbstractWindow(String viewPath, String title, boolean resizable) throws IOException {
+    protected AbstractWindow(String viewPath, String title, boolean resizable) {
         this.title = title;
         this.resizable = resizable;
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(viewPath));
 
-        this.view = loader.load();
+        try {
+            this.view = loader.load();
+        } catch (IOException e) {
+            log.error("Ошибка загрузки VIEW", e);
+        }
+
         this.controller = loader.getController();
         this.controller.setThisWindow(this);
     }
@@ -43,14 +47,26 @@ public abstract class AbstractWindow<T extends AbstractController> {
         return controller;
     }
 
+    public Scene getScene() {
+        return scene;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
     public boolean isShown() {
         return shown;
     }
 
     public void init(Stage stage) {
+        if (stage == null) {
+            log.error("NULL stage!");
+            return;
+        }
         this.stage = stage;
 
-        Scene scene = new Scene(view);
+        this.scene = new Scene(view);
         this.stage.setScene(scene);
 
         this.stage.setTitle(title);
@@ -63,16 +79,11 @@ public abstract class AbstractWindow<T extends AbstractController> {
         this.stage.setResizable(resizable);
     }
 
-
     public void startWindow() {
         if (this.stage == null) {
-            dialogBuilder.showError(
-                    "Ужасная ошибка разработчика",
-                    "Сообщите об этом разработчику, описав условия появления"
-            );
+            log.error("NULL stage!");
             return;
         }
-
         this.shown = true;
         this.stage.show();
     }
@@ -83,4 +94,5 @@ public abstract class AbstractWindow<T extends AbstractController> {
             this.stage.hide();
         }
     }
+
 }
