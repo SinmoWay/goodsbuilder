@@ -17,6 +17,7 @@ public class ProductDTO extends AbstractDTO {
     @Deprecated
     public ProductDTO() {
         super(null, null);
+        fabricators = new ArrayList<>();
     }
 
     public ProductDTO(NodeType type) {

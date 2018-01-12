@@ -63,5 +63,8 @@
                 AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0"/>
         <Button layoutX="524.0" layoutY="353.0" mnemonicParsing="false" onAction="#onCancel" text="Отмена"
                 AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"/>
+        <Button layoutX="415.0" layoutY="415.0" mnemonicParsing="false" onAction="#onSaveAs" text="Сохранить отдельно"
+                AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="100.0" disable="true" fx:id="saveAsButton"/>
+
     </AnchorPane>
 </VBox>

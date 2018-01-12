@@ -68,6 +68,8 @@ public class ProductController extends AbstractController {
     private Button editButton;
     @FXML
     private Button removeButton;
+    @FXML
+    private Button saveAsButton;
 
     private TreeItem<ContentDTO> currentItem = null;
 
@@ -110,6 +112,7 @@ public class ProductController extends AbstractController {
             root.getChildren().clear();
 
             if (dto.getId() != null) {
+                saveAsButton.setDisable(false);
                 descriptionBox.setText(dto.getDescription());
                 imgNameBox.setText(dto.getImage_name());
                 priceBox.setText(String.valueOf(dto.getPrice()));
@@ -144,6 +147,7 @@ public class ProductController extends AbstractController {
 
                 onImgShow();
             } else {
+                saveAsButton.setDisable(true);
                 descriptionBox.setText("");
                 imgNameBox.setText("");
                 priceBox.setText("");
@@ -239,28 +243,18 @@ public class ProductController extends AbstractController {
         if (answer != ButtonType.OK) {
             return;
         }
-        List<FabricatorDTO> fabricators = new ArrayList<>();
-        for (TreeItem<ContentDTO> node : table.getRoot().getChildren()) {
-            List<ContentDTO> content = node.getChildren().stream()
-                    .map(TreeItem::getValue)
-                    .collect(Collectors.toList());
-            ContentDTO curr = node.getValue();
-            fabricators.add(new FabricatorDTO(curr.getId(), curr.getName(), content));
+        save(dto);
+        onCancel();
+    }
+
+    @FXML
+    public void onSaveAs() {
+        ButtonType answer = dialogBuilder.alertConfirm("Сохранение", "Сохранение данного товара как копии", "Сохранить текущий товар отдельно не изменяя редактируемый?");
+        if (answer != ButtonType.OK) {
+            return;
         }
-        dto.getFabricators().clear();
-        dto.getFabricators().addAll(fabricators);
-
-        String desc = descriptionBox.getText();
-        String img = imgNameBox.getText();
-        String price = priceBox.getText();
-        String weight = weightBox.getText();
-
-        dto.setDescription(desc != null && !desc.isEmpty() ? desc.trim().toLowerCase() : "");
-        dto.setImage_name(img != null && !img.isEmpty() ? img.trim() : "");
-        dto.setPrice(price != null && !price.isEmpty() ? Double.valueOf(price.trim()) : null);
-        dto.setWeight(weight != null && !weight.isEmpty() ? Double.valueOf(weight.trim()) : null);
-
-        productService.saveOrUpdate(dto);
+        ProductDTO copy = new ProductDTO(dto.getNodeType());
+        save(copy);
         onCancel();
     }
 
@@ -271,6 +265,31 @@ public class ProductController extends AbstractController {
 
     public void setDTO(ProductDTO dto) {
         this.dto = dto;
+    }
+
+    private void save(ProductDTO currDTO) {
+        List<FabricatorDTO> fabricators = new ArrayList<>();
+        for (TreeItem<ContentDTO> node : table.getRoot().getChildren()) {
+            List<ContentDTO> content = node.getChildren().stream()
+                    .map(TreeItem::getValue)
+                    .collect(Collectors.toList());
+            ContentDTO curr = node.getValue();
+            fabricators.add(new FabricatorDTO(curr.getId(), curr.getName(), content));
+        }
+        currDTO.getFabricators().clear();
+        currDTO.getFabricators().addAll(fabricators);
+
+        String desc = descriptionBox.getText();
+        String img = imgNameBox.getText();
+        String price = priceBox.getText();
+        String weight = weightBox.getText();
+
+        currDTO.setDescription(desc != null && !desc.isEmpty() ? desc.trim().toLowerCase() : "");
+        currDTO.setImage_name(img != null && !img.isEmpty() ? img.trim() : "");
+        currDTO.setPrice(price != null && !price.isEmpty() ? Double.valueOf(price.trim()) : null);
+        currDTO.setWeight(weight != null && !weight.isEmpty() ? Double.valueOf(weight.trim()) : null);
+
+        productService.saveOrUpdate(currDTO);
     }
 
     private ChangeListener<String> onNumberInputChange(TextField field, boolean isDouble) {
