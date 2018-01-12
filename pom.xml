@@ -6,7 +6,7 @@
 
     <groupId>Europe</groupId>
     <artifactId>GoodsBuilder</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.5</version>
     <name>GoodsBuilder</name>
     <packaging>jar</packaging>
 
